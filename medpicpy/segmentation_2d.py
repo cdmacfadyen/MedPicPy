@@ -46,29 +46,29 @@ def read_classes_from_csv(csv, classes_column, encoding='one_hot'):
     
     return classes
     
-def read_bounding_boxes_from_csv(csv, 
+def read_bounding_boxes_from_csv(
+    csv, 
     centre_x_column, centre_y_column, 
     width_column, height_column, 
-    fill_nan=-1,
     x_scale_factor=1,
-    y_scale_factor=1): # for bounding boxes need to know if measurements are in pixels or mm
+    y_scale_factor=1
+    ): # for bounding boxes need to know if measurements are in pixels or mm
     bbox_xs = csv[centre_x_column]
-    bbox_ys = csv[centre_y_column]
-    bbox_xs = bbox_xs.fillna(fill_nan)
-    bbox_ys = bbox_ys.fillna(fill_nan)
+    bbox_xs = bbox_xs.multiply(x_scale_factor)
     xs_array = bbox_xs.to_numpy(dtype=np.float16)
+
+    bbox_ys = csv[centre_y_column]
+    bbox_ys = bbox_ys.multiply(y_scale_factor)
     ys_array = bbox_ys.to_numpy(dtype=np.float16)
-    xs_array = np.multiply(xs_array, x_scale_factor)
-    ys_array = np.multiply(ys_array, y_scale_factor)
+
 
     bbox_widths = csv[width_column]
-    bbox_heights = csv[height_column]
-    bbox_widths = bbox_widths.fillna(fill_nan)
-    bbox_heights = bbox_heights.fillna(fill_nan)
+    bbox_widths = bbox_widths.multiply(x_scale_factor)
     widths_array = bbox_widths.to_numpy(dtype=np.float16)
+
+    bbox_heights = csv[height_column]
+    bbox_heights = bbox_heights.multiply(y_scale_factor)
     heights_array = bbox_heights.to_numpy(dtype=np.float16)
-    widths_array = np.multiply(widths_array, x_scale_factor)
-    heights_array = np.multiply(heights_array, y_scale_factor)
 
     array_tuple = (xs_array, ys_array, widths_array, heights_array)
 
