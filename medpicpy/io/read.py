@@ -10,5 +10,6 @@ def load_image(path):
     image = np.zeros(1)
     if extension == "pgm":
         image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-    
+    else:
+        image = sitk.ReadImage(path)
     return image
