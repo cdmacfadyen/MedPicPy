@@ -2,6 +2,8 @@
 import pandas as pd
 import numpy as np
 import cv2
+import glob
+import os
 from .io import read
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 
@@ -73,3 +75,28 @@ def read_bounding_boxes_from_csv(
     array_tuple = (xs_array, ys_array, widths_array, heights_array)
 
     return array_tuple
+
+# To read datasets where the class name is in the directory structure.
+# i.e. covid/im001 or no-covid/im001
+# pulls the class names from the path and reads in the images
+# as a numpy array
+def read_classes_in_directory_name(directory, image_file_wildcard, output_shape,class_level=1):
+    path_to_search = directory + "/**/" + image_file_wildcard
+    files = glob.glob(path_to_search, recursive=True)
+
+    number_of_files = len(files)
+    array_shape = (number_of_files,) + output_shape #concatonate the tuples
+    array = np.zeros(array_shape, dtype=np.int16)
+    classes = np.empty(number_of_files, dtype=object)
+
+    for index, name in enumerate(files):
+        parts = os.path.split(name)
+        class_name = parts[class_level]
+
+        image = read.load_image(name)
+        result = cv2.resize(image, output_shape)
+
+        classes[index] = class_name
+        array[index] = result
+        
+    return classes, array
