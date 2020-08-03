@@ -9,6 +9,14 @@ import numpy as np
 # then catch an exception then try with opencv.
 # one stop shop for image reading
 def load_image(path):
+    """Load in any image or image series from a path
+
+    Args:
+        path (str): path to image or directory for a series
+
+    Returns:
+        np.Array: image in numpy format
+    """
     image_name = ntpath.basename(path)
     image_as_array = None
 
@@ -32,6 +40,14 @@ def load_image(path):
 
 
 def load_series(path): # for more than 2d dicoms. 
+    """Load an image series (e.g. dicom)
+
+    Args:
+        path (str): Path to directory of series
+
+    Returns:
+        np.Array: Image in numpy array format
+    """
     series_reader = sitk.ImageSeriesReader()
     file_names = series_reader.GetGDCMSeriesFileNames(path)
     series_reader.SetFileNames(file_names)
