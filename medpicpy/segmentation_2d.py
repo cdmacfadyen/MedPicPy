@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import cv2
 import glob
-import os
+from pathlib import Path
 from .io import read
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 
@@ -90,7 +90,7 @@ def read_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     classes = np.empty(number_of_files, dtype=object)
 
     for index, name in enumerate(files):
-        parts = os.path.split(name)
+        parts = Path(name).parts
         class_name = parts[class_level]
 
         image = read.load_image(name)
