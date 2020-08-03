@@ -22,7 +22,6 @@ def get_ct_slices_from_paths(ct_paths, output_shape):
     reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
     series_lengths = [len(series) for series in reshaped]
     output_array_length = sum(series_lengths)
-    print("output array len ", output_array_length)
     output_array_shape = (output_array_length,) + output_shape
     array = np.zeros(output_array_shape)
 
