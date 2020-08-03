@@ -75,7 +75,7 @@ def read_bounding_boxes_from_csv(
     """Read bounding boxes from dataframe of csv
 
     Args:
-        dataframe (pandas.DataFrane): Dataframe of csv
+        dataframe (pandas.DataFrame): Dataframe of csv
         centre_x_column (index): Index of column for x anchor or box
         centre_y_column (index): Index of column for y anchor of box
         width_column (index): Index of column for width of box
@@ -118,9 +118,11 @@ def read_classes_in_directory_name(directory, image_file_wildcard, output_shape,
 
     Args:
         directory (path): root directory of dataset
-        image_file_wildcard (str): Wildcard for identifying images, e.g for png's - *.png
+        image_file_wildcard (str): Wildcard for identifying images,
+             e.g for png's - *.png
         output_shape (tuple): Desired output shape of images
-        class_level (int, optional): Which level of directory structure contains class name. Defaults to 1.
+        class_level (int, optional): Which level of directory structure 
+            contains class name. Defaults to 1.
 
     Returns:
         list(str), np.Array : list of classes and corresponding images with correct shape
