@@ -10,29 +10,25 @@ from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 # opt args to add
 #   - resize keeps aspect ratio?
 
-def read_images_from_csv(csv, image_name_column, image_dir_path, output_shape):
-
-    array_length = len(csv[image_name_column])
+def read_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
+    array_length = len(dataframe[image_name_column])
     array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
     image_array = np.zeros(array_shape)
 
     for i in range(0, array_length):
-        image_name = csv[image_name_column][i]
+        image_name = dataframe[image_name_column][i]
         image_path = image_dir_path + image_name
         image = read.load_image(image_path)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
 
     return image_array
-def read_masks_from_csv(csv_path, mask_name_column, mask_dir_path): # do we need this when its just the same as the image one?
-    
-    return 0
 
 # other encoding is categorical with labelencoder, or none and it just returns the series
-def read_classes_from_csv(csv, classes_column, encoding='one_hot'):
+def read_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
     classes = None
     encoder = None
-    class_column = csv[classes_column]
+    class_column = dataframe[classes_column]
 
     #check for nans
     if class_column.isnull().values.any():
@@ -49,26 +45,26 @@ def read_classes_from_csv(csv, classes_column, encoding='one_hot'):
     return classes
     
 def read_bounding_boxes_from_csv(
-    csv, 
+    dataframe, 
     centre_x_column, centre_y_column, 
     width_column, height_column, 
     x_scale_factor=1,
     y_scale_factor=1
     ): # for bounding boxes need to know if measurements are in pixels or mm
-    bbox_xs = csv[centre_x_column]
+    bbox_xs = dataframe[centre_x_column]
     bbox_xs = bbox_xs.multiply(x_scale_factor)
     xs_array = bbox_xs.to_numpy(dtype=np.float16)
 
-    bbox_ys = csv[centre_y_column]
+    bbox_ys = dataframe[centre_y_column]
     bbox_ys = bbox_ys.multiply(y_scale_factor)
     ys_array = bbox_ys.to_numpy(dtype=np.float16)
 
 
-    bbox_widths = csv[width_column]
+    bbox_widths = dataframe[width_column]
     bbox_widths = bbox_widths.multiply(x_scale_factor)
     widths_array = bbox_widths.to_numpy(dtype=np.float16)
 
-    bbox_heights = csv[height_column]
+    bbox_heights = dataframe[height_column]
     bbox_heights = bbox_heights.multiply(y_scale_factor)
     heights_array = bbox_heights.to_numpy(dtype=np.float16)
 
@@ -80,7 +76,7 @@ def read_bounding_boxes_from_csv(
 # i.e. covid/im001 or no-covid/im001
 # pulls the class names from the path and reads in the images
 # as a numpy array
-def read_classes_in_directory_name(directory, image_file_wildcard, output_shape,class_level=1):
+def read_classes_in_directory_name(directory, image_file_wildcard, output_shape, class_level=1):
     path_to_search = directory + "/**/" + image_file_wildcard
     files = glob.glob(path_to_search, recursive=True)
 
