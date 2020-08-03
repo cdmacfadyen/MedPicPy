@@ -52,6 +52,5 @@ def load_series(path): # for more than 2d dicoms.
     file_names = series_reader.GetGDCMSeriesFileNames(path)
     series_reader.SetFileNames(file_names)
     image = series_reader.Execute()
-
     array = sitk.GetArrayFromImage(image)
     return array
