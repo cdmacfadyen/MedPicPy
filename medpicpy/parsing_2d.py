@@ -4,8 +4,10 @@ import numpy as np
 import cv2
 import glob
 from pathlib import Path
-from .io import read
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
+
+
+from . import io
 
 # opt args to add
 #   - resize keeps aspect ratio?
@@ -28,7 +30,7 @@ def read_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     for i in range(0, array_length):
         image_name = dataframe[image_name_column][i]
         image_path = image_dir_path + image_name
-        image = read.load_image(image_path)
+        image = io.load_image(image_path)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
 
@@ -139,7 +141,7 @@ def read_classes_in_directory_name(directory, image_file_wildcard, output_shape,
         parts = Path(name).parts
         class_name = parts[class_level]
 
-        image = read.load_image(name)
+        image = io.load_image(name)
         result = cv2.resize(image, output_shape)
 
         classes[index] = class_name

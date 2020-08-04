@@ -2,8 +2,7 @@ import numpy as np
 import pandas as pd
 import cv2
 
-from .io import read
-
+from . import io
 #output shape is the shape for each image
 # TODO: we could also have it return the paths, or image 
 # names or something
@@ -18,7 +17,7 @@ def get_ct_slices_from_paths(ct_paths, output_shape):
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    all_series = [read.load_image(path) for path in ct_paths]
+    all_series = [io.load_image(path) for path in ct_paths]
     reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
     series_lengths = [len(series) for series in reshaped]
     output_array_length = sum(series_lengths)
