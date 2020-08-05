@@ -37,6 +37,8 @@ def read_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     return image_array
 
 # other encoding is categorical with labelencoder, or none and it just returns the series
+# TODO: probably leave the encoding out and that way they can do whatever they want. 
+# means that this doesn't have to require sklearn. 
 def read_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
     """Read classes from column in dataframe and optionally 
     transform to one hot or categorical values. 
