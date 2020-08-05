@@ -8,19 +8,17 @@ from . import io
 # TODO: we could also have it return the paths, or image 
 # names or something
 # get_all_slices_from_scans maybe
-def get_ct_slices_from_paths(ct_paths, output_shape, slices_to_take=[[]]):
-    """Reads a dataset of individual ct slices from 
-    multiple series of slices.
+def get_all_slices_from_series(paths, output_shape):
+    """Reads a dataset of 2d images from a 3d series
 
     Args:
-        ct_paths (list or array-like): List of paths to ct series 
+        paths (list or array-like): List of paths to series 
         output_shape (tuple): desired output shape for each slice
-        slices_to_take (array of arrays): slice (or slices) to take from each scan
 
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    all_series = [io.load_image(path) for path in ct_paths]
+    all_series = [io.load_image(path) for path in paths]
     reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
     series_lengths = [len(series) for series in reshaped]
     output_array_length = sum(series_lengths)
@@ -39,6 +37,19 @@ def get_ct_slices_from_paths(ct_paths, output_shape, slices_to_take=[[]]):
 #TODO: for this one we do know the output size ahead of time 
 # so we can make this faster
 def get_slices_from_scans(paths, output_shape, slices_to_take):
+    """Get specific slice or slices from series of scans.
+    Takes path, desired shape and array of slice/slices to 
+    take from each series. 
+
+    Args:
+        paths (array): array of paths to the series
+        output_shape (tuple): desired shape of each slice
+        slices_to_take (array of arrays): one array of slices 
+            to take for each series
+
+    Returns:
+        np.array: every slice as specified by the slices_to_take
+    """ 
     all_series = [io.load_image(path) for path in paths]
     chosen = [[] for series in all_series]
 
@@ -68,24 +79,22 @@ def get_slices_from_scans(paths, output_shape, slices_to_take):
 
     return array
 
-# Currently this makes the most sense for getting 
-# array of specific modality from tcia dataset
-def filter_image_paths(dataset_root, strings_to_match, extension=""):
-    paths = glob.glob(dataset_root + "/**/" + extension, recursive=True)
-
-    print(paths)
 
 #TODO: make it only remove paths that are subsets
 def get_paths_from_ids(data_dir, ids, path_filters=[""]):
     """Read in a dataset from a list of patient ids, optionally filtering
-    the path. i.e. ["DX"] for X-rays. 
+    the path. i.e. (i.e. ["CT", "supine"])
 
     Args:
         data_dir (str): path to dataset
         ids (list or array-like): list of ids to read in, assuming each 
         id is a directory in the dataset (e.g. TCIA datasets)
-        path_filters (list, optional): Any filters to apply to the path 
-        (i.e. ["CT", "supine"]). Defaults to [""].
+        path_filters (list, optional): Any filters to apply to the path.
+            Defaults to [""].
+
+    Returns:
+        array: All paths that match the ids with filters, 
+            in the same order as ids
     """
     paths = []
     for id_number in ids:
