@@ -99,9 +99,10 @@ def get_paths_from_ids(data_dir, ids, path_filters=[""]):
     paths = []
     for id_number in ids:
         paths_for_id = glob.glob(data_dir + "/" + id_number + "/**/", recursive=True)
-        
         for path_filter in path_filters:
             paths_for_id = [path for path in paths_for_id if path_filter in path]
+        if paths_for_id:
+            paths_for_id = remove_sub_paths(paths_for_id)
         if not paths_for_id:    #TODO: doesn't work on a filter object
             paths.append(None)
             print("Warn: Could not find any paths for id {}".format(id_number))
@@ -109,4 +110,22 @@ def get_paths_from_ids(data_dir, ids, path_filters=[""]):
             paths.extend(paths_for_id)  #TODO: find the longest one per id
 
         
+    return paths
+
+def remove_sub_paths(paths):
+    """Since glob.glob with recursive doesn't
+    only take the longest path we need to remove
+    paths that are a part of other paths.
+
+    Args:
+        paths (array): array of paths
+
+    Returns:
+        array: array of paths that aren't a subset of other paths
+    """
+    for path in paths:
+        for other in paths:
+            if path in other and path != other:
+                paths.remove(path)
+    
     return paths
