@@ -12,7 +12,7 @@ from . import io
 # opt args to add
 #   - resize keeps aspect ratio?
 #TODO: probably change it from taking a dataframe to taking an array (i.e. pd.Series)
-def read_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
+def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     """Read in an array of images from paths specified in a csv
 
     Args:
@@ -42,7 +42,7 @@ def read_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
 # means that this doesn't have to require sklearn. 
 # TODO: kind of useless since they already have the classes as an array,
 # probably just remove
-def read_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
+def load_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
     """Read classes from column in dataframe and optionally 
     transform to one hot or categorical values. 
 
@@ -73,7 +73,7 @@ def read_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
     return classes
 
 #TODO kind of useless since they already have the bounding boxes as arrays
-def read_bounding_boxes_from_csv(
+def load_bounding_boxes_from_csv(
     dataframe, 
     centre_x_column, 
     centre_y_column, 
@@ -122,7 +122,7 @@ def read_bounding_boxes_from_csv(
 # i.e. covid/im001 or no-covid/im001
 # pulls the class names from the path and reads in the images
 # as a numpy array
-def read_classes_in_directory_name(directory, image_file_wildcard, output_shape, class_level=1):
+def load_classes_in_directory_name(directory, image_file_wildcard, output_shape, class_level=1):
     """Parse datasets where the class name is in the 
     directory structure
 
