@@ -8,7 +8,7 @@ from . import io
 # TODO: we could also have it return the paths, or image 
 # names or something
 # get_all_slices_from_scans maybe
-def get_all_slices_from_series(paths, output_shape):
+def load_all_slices_from_series(paths, output_shape):
     """Reads a dataset of 2d images from a 3d series
 
     Args:
@@ -36,7 +36,7 @@ def get_all_slices_from_series(paths, output_shape):
 
 #TODO: for this one we do know the output size ahead of time 
 # so we can make this faster
-def get_slices_from_scans(paths, output_shape, slices_to_take):
+def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     """Get specific slice or slices from series of scans.
     Takes path, desired shape and array of slice/slices to 
     take from each series. 
