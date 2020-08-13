@@ -4,6 +4,7 @@ to image data.
 """
 
 import glob
+
 from .utils import remove_sub_paths
 
 def get_paths_to_images(data_dir, extension):

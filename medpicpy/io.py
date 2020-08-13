@@ -1,10 +1,11 @@
 """medpicpy's lower level functions for reading individual images.
 
 """
-import cv2
-import SimpleITK as sitk
 import os
 import ntpath
+
+import cv2
+import SimpleITK as sitk
 import numpy as np
 
 # TODO: Read more about SITK formats, probably 

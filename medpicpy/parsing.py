@@ -2,11 +2,12 @@
 in medical imaging data
 
 """
+import glob
+from pathlib import Path
+
 import pandas as pd
 import numpy as np
 import cv2
-import glob
-from pathlib import Path
 
 from . import io
 
