@@ -1,3 +1,6 @@
+"""
+Utility functions for the package that the user shouldn't need.
+"""
 def remove_sub_paths(paths):
     """Since glob.glob with recursive doesn't
     only take the longest path we need to remove

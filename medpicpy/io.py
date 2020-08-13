@@ -1,3 +1,6 @@
+"""medpicpy's lower level functions for reading individual images.
+
+"""
 import cv2
 import SimpleITK as sitk
 import os
@@ -40,7 +43,7 @@ def load_image(path):
 
 
 def load_series(path): # for more than 2d dicoms. 
-    """Load an image series (e.g. dicom)
+    """Load an image series from a directory(e.g. dicom)
 
     Args:
         path (str): Path to directory of series

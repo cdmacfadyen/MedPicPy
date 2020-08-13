@@ -1,3 +1,8 @@
+"""
+medpicpy's functions for finding and filtering paths 
+to image data.
+"""
+
 import glob
 from .utils import remove_sub_paths
 
