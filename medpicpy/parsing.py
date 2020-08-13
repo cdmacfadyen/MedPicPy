@@ -1,11 +1,8 @@
-# contains files for doing 2d segmentation reading
 import pandas as pd
 import numpy as np
 import cv2
 import glob
 from pathlib import Path
-from sklearn.preprocessing import LabelEncoder, LabelBinarizer
-
 
 from . import io
 
@@ -36,42 +33,8 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
         image_array[i] = resized
 
     return image_array
-
-# other encoding is categorical with labelencoder, or none and it just returns the series
-# TODO: probably leave the encoding out and that way they can do whatever they want. 
-# means that this doesn't have to require sklearn. 
-# TODO: kind of useless since they already have the classes as an array,
-# probably just remove
-def load_classes_from_csv(dataframe, classes_column, encoding='one_hot'):
-    """Read classes from column in dataframe and optionally 
-    transform to one hot or categorical values. 
-
-
-    Args:
-        dataframe (pandas.DataFrame): DataFrame of csv
-        classes_column (index): Index of column with classes
-        encoding (str, optional): Encoding to be applied to classes. 
-            'one_hot', 'categorical' or None. Defaults to 'one_hot'
-
-    Returns:
-        np.Array: array of encoded class names
-    """
-    classes = None
-    encoder = None
-    class_column = dataframe[classes_column]
-
-    #check for nans
-    if class_column.isnull().values.any():
-        print("Warning: csv contains NaN (not a number values).")
-        class_column.fillna("nan", inplace=True)
-
-    if encoding == "one_hot":
-        encoder = LabelBinarizer()
-    classes = encoder.fit_transform(class_column)
-    print("{} Classes found: {}".format(len(encoder.classes_),encoder.classes_))
     
-    return classes
-
+    
 #TODO kind of useless since they already have the bounding boxes as arrays
 def load_bounding_boxes_from_csv(
     dataframe, 
@@ -184,3 +147,78 @@ def load_images_from_paths(paths, output_shape):
         image_array[i] = resized
     
     return image_array
+
+#output shape is the shape for each image
+# TODO: we could also have it return the paths, or image 
+# names or something
+# get_all_slices_from_scans maybe
+def load_all_slices_from_series(paths, output_shape):
+    """Reads a dataset of 2d images from a 3d series
+
+    Args:
+        paths (list or array-like): List of paths to series 
+        output_shape (tuple): desired output shape for each slice
+
+    Returns:
+        numpy.Array: array containing the reshaped slices
+    """
+    all_series = [io.load_image(path) for path in paths]
+    reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
+    series_lengths = [len(series) for series in reshaped]
+    output_array_length = sum(series_lengths)
+    output_array_shape = (output_array_length,) + output_shape
+    array = np.zeros(output_array_shape)
+
+    output_index = 0
+    for series_counter in range(0, len(series_lengths)):
+        for image_counter in range(0, series_lengths[series_counter]):
+            array[output_index] = reshaped[series_counter][image_counter]
+            output_index += 1
+    
+
+    return array
+
+#TODO: for this one we do know the output size ahead of time 
+# so we can make this faster
+def load_specific_slices_from_series(paths, output_shape, slices_to_take):
+    """Get specific slice or slices from series of scans.
+    Takes path, desired shape and array of slice/slices to 
+    take from each series. 
+
+    Args:
+        paths (array): array of paths to the series
+        output_shape (tuple): desired shape of each slice
+        slices_to_take (array of arrays): one array of slices 
+            to take for each series
+
+    Returns:
+        np.array: every slice as specified by the slices_to_take
+    """ 
+    all_series = [io.load_image(path) for path in paths]
+    chosen = [[] for series in all_series]
+
+    if len(all_series) is not len(slices_to_take):
+        print("length of series is not the same as slices array")
+        exit(0)
+    
+    for series in range(0, len(slices_to_take)):
+        for slice_index in slices_to_take[series]:
+            chosen_slice = all_series[series][slice_index]
+            resized_slice = cv2.resize(chosen_slice, output_shape)
+            chosen[series].append(resized_slice)
+    
+    series_lengths = [len(new_series) for new_series in chosen]
+    output_array_length = sum(series_lengths)
+    output_array_shape = (output_array_length,) + output_shape
+
+    #TODO: duplicated code.
+    array = np.zeros(output_array_shape)
+
+    output_index = 0
+    for series_counter in range(0, len(series_lengths)):
+        for image_counter in range(0, series_lengths[series_counter]):
+            array[output_index] = chosen[series_counter][image_counter]
+            output_index += 1
+    
+
+    return array
