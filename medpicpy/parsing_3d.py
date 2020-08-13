@@ -79,8 +79,11 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
 
     return array
 
+def get_paths_to_images(data_dir, extension):
+    paths = glob.glob(data_dir + "/**/*" + extension, recursive=True)
 
-#TODO: make it only remove paths that are subsets
+    return paths
+
 def get_paths_from_ids(data_dir, ids, path_filters=[""]):
     """Read in a dataset from a list of patient ids, optionally filtering
     the path. i.e. (i.e. ["CT", "supine"])
