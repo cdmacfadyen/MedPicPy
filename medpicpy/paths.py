@@ -7,14 +7,48 @@ import glob
 
 from .utils import remove_sub_paths
 
-def get_paths_to_images(data_dir, extension):
-    paths = glob.glob(data_dir + "/**/*" + extension, recursive=True)
+def get_paths_to_images(data_dir, extension, path_filters=[""]):
+    """Search directory and subdirectories for image with the given 
+    extension.
 
+    Optionally takes a list of strings to be applied as filters 
+    to the path e.g. ["CT", "prone"] or ["flair"]. These paths 
+    can then be passed to load_images_from_paths.
+
+    Args:
+        data_dir (str): path to root of dataset
+        extension (str): file extension to search for
+        path_filters (list, optional): filters to apply to paths. Defaults to [""].
+
+    Returns:
+        list: list of paths to images
+    """
+    paths = glob.glob(data_dir + "/**/*" + extension, recursive=True)
+    
+    if path_filters is not [""]:
+        paths = filter_paths(paths, path_filters)
+
+    return paths
+
+def filter_paths(paths, filters):
+    """Filters a list of paths so it only contains
+    paths containing all of the given filters.
+
+    Used by get_paths_to_images.
+
+    Args:
+        paths (array): array of paths
+        filters (array): filters paths must contain
+
+    Returns:
+        array: paths that contain the filters
+    """
+    paths = [path for path in paths if all([path_filter in path for path_filter in filters])]
     return paths
 
 def get_paths_from_ids(data_dir, ids, path_filters=[""]):
     """Read in a dataset from a list of patient ids, optionally filtering
-    the path. i.e. (i.e. ["CT", "supine"])
+    the path. e.g. ["CT", "supine"]
 
     Args:
         data_dir (str): path to dataset
