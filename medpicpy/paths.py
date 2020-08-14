@@ -53,6 +53,8 @@ def get_paths_from_ids(data_dir,
     """Read in a dataset from a list of patient ids, optionally filtering
     the path. e.g. ["CT", "supine", ".nii.gz"].
 
+    Use this if your dataset is has a structure like 
+    'data_dir/patient_id/.../image'.
     Optionally searches for directories instead of 
     individual files, use this for e.g dicom series.
     You may want to include the file extension in the 
