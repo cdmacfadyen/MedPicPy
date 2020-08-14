@@ -46,9 +46,17 @@ def filter_paths(paths, filters):
     paths = [path for path in paths if all([path_filter in path for path_filter in filters])]
     return paths
 
-def get_paths_from_ids(data_dir, ids, path_filters=[""]):
+def get_paths_from_ids(data_dir, 
+    ids,
+    path_filters=[""], 
+    read_individual_files=True):
     """Read in a dataset from a list of patient ids, optionally filtering
-    the path. e.g. ["CT", "supine"]
+    the path. e.g. ["CT", "supine", ".nii.gz"].
+
+    Optionally searches for directories instead of 
+    individual files, use this for e.g dicom series.
+    You may want to include the file extension in the 
+    filters.
 
     Args:
         data_dir (str): path to dataset
@@ -56,6 +64,8 @@ def get_paths_from_ids(data_dir, ids, path_filters=[""]):
         id is a directory in the dataset (e.g. TCIA datasets)
         path_filters (list, optional): Any filters to apply to the path.
             Defaults to [""].
+        read_individual_files(bool, optional): specifies to look for 
+            individual files or directories. Defaults to True
 
     Returns:
         array: All paths that match the ids with filters, 
@@ -63,7 +73,12 @@ def get_paths_from_ids(data_dir, ids, path_filters=[""]):
     """
     paths = []
     for id_number in ids:
-        paths_for_id = glob.glob(data_dir + "/" + id_number + "/**/", recursive=True)
+        paths_for_id = ""
+        if read_individual_files:
+            paths_for_id = glob.glob(data_dir + "/" + id_number + "/**/*", recursive=True)
+        else:
+            paths_for_id = glob.glob(data_dir + "/" + id_number + "/**/", recursive=True)
+
         for path_filter in path_filters:
             paths_for_id = [path for path in paths_for_id if path_filter in path]
         if paths_for_id:
