@@ -206,6 +206,7 @@ def load_scans_from_paths(
             final_image[i] = image
         
         temp_list.append(final_image)
+    print("here")
     return np.array(temp_list)
 
 #output shape is the shape for each image
@@ -282,3 +283,6 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     
 
     return array
+
+def stack_modalities(arrays, axis=-1):
+    return np.stack(arrays, axis=axis)
