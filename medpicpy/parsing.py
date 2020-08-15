@@ -128,11 +128,13 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
 
 
 def load_images_from_paths(paths, output_shape):
-    """General image loading function that takes an array of 
+    """2D image loading function that takes an array of 
     paths and an output shape and returns the images in 
     the same order as the paths. Requires every 
     path to have an image and every image to be resizeable 
-    to the given output shape
+    to the given output shape.
+
+    For higher dimension images use load_scans_from_paths.
 
     Args:
         paths (list or array-like): paths of images to load
@@ -152,6 +154,59 @@ def load_images_from_paths(paths, output_shape):
         image_array[i] = resized
     
     return image_array
+
+# slice axis will be -2 for most things since they 
+# are 1 channel, for colour images would probably be -3
+# But I don't think you get colour 3D scans
+# It would work for multimodal things stacked on top of each other though
+def load_scans_from_paths(
+    paths,
+    slice_output_shape, 
+    slices_to_take,
+    slice_axis=-2
+    ):
+    """Load an array of 3D scans into memory from their paths.
+
+    Useful for e.g. CT or MR scans. Takes a list of paths, the output shape
+    for each 2D slice and a list containing which slices 
+    to take from each image. To take the first 60 slices
+    pass range(0, 60). 
+
+    The output shape should be a tuple of (int, int).
+    
+    Optionally take which axis to reshape the image along.
+    For any scans with one channel (grayscale) slices this should 
+    be -2, if there is a colour channel (or its some kind 
+    of multimodal stack) then the axis would be -3. 
+
+    Args:
+        paths (list): list of paths to the scans to load
+        slice_output_shape (tuple): shape each slice should be resized to
+        slices_to_take (list): list of indices of slices to take
+        slice_axis (int, optional): axis to resize along. Defaults to -2.
+
+    Returns:
+        np.array: array of all scans with specified size
+    """
+
+    temp_list = []
+    for i in range(0, len(paths)):
+        path = paths[i]
+        image = io.load_image(path)
+        new_image = np.zeros(((len(slices_to_take),) + image[0].shape))
+        for index, slice_index in enumerate(slices_to_take):
+            new_image[index] = image[slice_index]
+        
+        final_shape = new_image.shape[:slice_axis] + slice_output_shape + new_image.shape[:slice_axis + 2]
+        final_image = np.zeros(final_shape)
+
+        for i in range(final_shape[0]):
+            image = new_image[i][slice_axis]
+            image = cv2.resize(image, slice_output_shape)
+            final_image[i] = image
+        
+        temp_list.append(final_image)
+    return np.array(temp_list)
 
 #output shape is the shape for each image
 # TODO: we could also have it return the paths, or image 
