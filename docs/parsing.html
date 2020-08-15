@@ -237,6 +237,7 @@ def load_scans_from_paths(
             final_image[i] = image
         
         temp_list.append(final_image)
+    print(&#34;here&#34;)
     return np.array(temp_list)
 
 #output shape is the shape for each image
@@ -312,7 +313,10 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
             output_index += 1
     
 
-    return array</code></pre>
+    return array
+
+def stack_modalities(arrays, axis=-1):
+    return np.stack(arrays, axis=axis)</code></pre>
 </details>
 </section>
 <section>
@@ -696,6 +700,7 @@ of multimodal stack) then the axis would be -3. </p>
             final_image[i] = image
         
         temp_list.append(final_image)
+    print(&#34;here&#34;)
     return np.array(temp_list)</code></pre>
 </details>
 </dd>
@@ -769,6 +774,19 @@ to take for each series</dd>
     return array</code></pre>
 </details>
 </dd>
+<dt id="medpicpy.parsing.stack_modalities"><code class="name flex">
+<span>def <span class="ident">stack_modalities</span></span>(<span>arrays, axis=-1)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stack_modalities(arrays, axis=-1):
+    return np.stack(arrays, axis=axis)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -794,6 +812,7 @@ to take for each series</dd>
 <li><code><a title="medpicpy.parsing.load_images_from_paths" href="#medpicpy.parsing.load_images_from_paths">load_images_from_paths</a></code></li>
 <li><code><a title="medpicpy.parsing.load_scans_from_paths" href="#medpicpy.parsing.load_scans_from_paths">load_scans_from_paths</a></code></li>
 <li><code><a title="medpicpy.parsing.load_specific_slices_from_series" href="#medpicpy.parsing.load_specific_slices_from_series">load_specific_slices_from_series</a></code></li>
+<li><code><a title="medpicpy.parsing.stack_modalities" href="#medpicpy.parsing.stack_modalities">stack_modalities</a></code></li>
 </ul>
 </li>
 </ul>
