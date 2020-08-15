@@ -38,14 +38,58 @@ import glob
 
 from .utils import remove_sub_paths
 
-def get_paths_to_images(data_dir, extension):
+def get_paths_to_images(data_dir, extension, path_filters=[&#34;&#34;]):
+    &#34;&#34;&#34;Search directory and subdirectories for image with the given 
+    extension.
+
+    Optionally takes a list of strings to be applied as filters 
+    to the path e.g. [&#34;CT&#34;, &#34;prone&#34;] or [&#34;flair&#34;]. These paths 
+    can then be passed to load_images_from_paths.
+
+    Args:
+        data_dir (str): path to root of dataset
+        extension (str): file extension to search for
+        path_filters (list, optional): filters to apply to paths. Defaults to [&#34;&#34;].
+
+    Returns:
+        list: list of paths to images
+    &#34;&#34;&#34;
     paths = glob.glob(data_dir + &#34;/**/*&#34; + extension, recursive=True)
+    
+    if path_filters is not [&#34;&#34;]:
+        paths = filter_paths(paths, path_filters)
 
     return paths
 
-def get_paths_from_ids(data_dir, ids, path_filters=[&#34;&#34;]):
+def filter_paths(paths, filters):
+    &#34;&#34;&#34;Filters a list of paths so it only contains
+    paths containing all of the given filters.
+
+    Used by get_paths_to_images.
+
+    Args:
+        paths (array): array of paths
+        filters (array): filters paths must contain
+
+    Returns:
+        array: paths that contain the filters
+    &#34;&#34;&#34;
+    paths = [path for path in paths if all([path_filter in path for path_filter in filters])]
+    return paths
+
+def get_paths_from_ids(data_dir, 
+    ids,
+    path_filters=[&#34;&#34;], 
+    read_individual_files=True):
     &#34;&#34;&#34;Read in a dataset from a list of patient ids, optionally filtering
-    the path. i.e. (i.e. [&#34;CT&#34;, &#34;supine&#34;])
+    the path. e.g. [&#34;CT&#34;, &#34;supine&#34;, &#34;.nii.gz&#34;].
+
+    Use this if your dataset has a structure like 
+    &#39;data_dir/patient_id/.../image&#39;.
+    Optionally searches for directories instead of 
+    individual files, use this for e.g dicom series.
+    You may want to include the file extension in the 
+    filters.
 
     Args:
         data_dir (str): path to dataset
@@ -53,6 +97,8 @@ def get_paths_from_ids(data_dir, ids, path_filters=[&#34;&#34;]):
         id is a directory in the dataset (e.g. TCIA datasets)
         path_filters (list, optional): Any filters to apply to the path.
             Defaults to [&#34;&#34;].
+        read_individual_files(bool, optional): specifies to look for 
+            individual files or directories. Defaults to True
 
     Returns:
         array: All paths that match the ids with filters, 
@@ -60,7 +106,12 @@ def get_paths_from_ids(data_dir, ids, path_filters=[&#34;&#34;]):
     &#34;&#34;&#34;
     paths = []
     for id_number in ids:
-        paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/&#34;, recursive=True)
+        paths_for_id = &#34;&#34;
+        if read_individual_files:
+            paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/*&#34;, recursive=True)
+        else:
+            paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/&#34;, recursive=True)
+
         for path_filter in path_filters:
             paths_for_id = [path for path in paths_for_id if path_filter in path]
         if paths_for_id:
@@ -82,12 +133,58 @@ def get_paths_from_ids(data_dir, ids, path_filters=[&#34;&#34;]):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="medpicpy.paths.filter_paths"><code class="name flex">
+<span>def <span class="ident">filter_paths</span></span>(<span>paths, filters)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Filters a list of paths so it only contains
+paths containing all of the given filters.</p>
+<p>Used by get_paths_to_images.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>paths</code></strong> :&ensp;<code>array</code></dt>
+<dd>array of paths</dd>
+<dt><strong><code>filters</code></strong> :&ensp;<code>array</code></dt>
+<dd>filters paths must contain</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>array</code></dt>
+<dd>paths that contain the filters</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter_paths(paths, filters):
+    &#34;&#34;&#34;Filters a list of paths so it only contains
+    paths containing all of the given filters.
+
+    Used by get_paths_to_images.
+
+    Args:
+        paths (array): array of paths
+        filters (array): filters paths must contain
+
+    Returns:
+        array: paths that contain the filters
+    &#34;&#34;&#34;
+    paths = [path for path in paths if all([path_filter in path for path_filter in filters])]
+    return paths</code></pre>
+</details>
+</dd>
 <dt id="medpicpy.paths.get_paths_from_ids"><code class="name flex">
-<span>def <span class="ident">get_paths_from_ids</span></span>(<span>data_dir, ids, path_filters=[''])</span>
+<span>def <span class="ident">get_paths_from_ids</span></span>(<span>data_dir, ids, path_filters=[''], read_individual_files=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Read in a dataset from a list of patient ids, optionally filtering
-the path. i.e. (i.e. ["CT", "supine"])</p>
+the path. e.g. ["CT", "supine", ".nii.gz"].</p>
+<p>Use this if your dataset has a structure like
+'data_dir/patient_id/&hellip;/image'.
+Optionally searches for directories instead of
+individual files, use this for e.g dicom series.
+You may want to include the file extension in the
+filters.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data_dir</code></strong> :&ensp;<code>str</code></dt>
@@ -99,6 +196,8 @@ the path. i.e. (i.e. ["CT", "supine"])</p>
 <dd>Any filters to apply to the path.
 Defaults to [""].</dd>
 </dl>
+<p>read_individual_files(bool, optional): specifies to look for
+individual files or directories. Defaults to True</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>array</code></dt>
@@ -109,9 +208,19 @@ in the same order as ids</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_paths_from_ids(data_dir, ids, path_filters=[&#34;&#34;]):
+<pre><code class="python">def get_paths_from_ids(data_dir, 
+    ids,
+    path_filters=[&#34;&#34;], 
+    read_individual_files=True):
     &#34;&#34;&#34;Read in a dataset from a list of patient ids, optionally filtering
-    the path. i.e. (i.e. [&#34;CT&#34;, &#34;supine&#34;])
+    the path. e.g. [&#34;CT&#34;, &#34;supine&#34;, &#34;.nii.gz&#34;].
+
+    Use this if your dataset has a structure like 
+    &#39;data_dir/patient_id/.../image&#39;.
+    Optionally searches for directories instead of 
+    individual files, use this for e.g dicom series.
+    You may want to include the file extension in the 
+    filters.
 
     Args:
         data_dir (str): path to dataset
@@ -119,6 +228,8 @@ in the same order as ids</dd>
         id is a directory in the dataset (e.g. TCIA datasets)
         path_filters (list, optional): Any filters to apply to the path.
             Defaults to [&#34;&#34;].
+        read_individual_files(bool, optional): specifies to look for 
+            individual files or directories. Defaults to True
 
     Returns:
         array: All paths that match the ids with filters, 
@@ -126,7 +237,12 @@ in the same order as ids</dd>
     &#34;&#34;&#34;
     paths = []
     for id_number in ids:
-        paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/&#34;, recursive=True)
+        paths_for_id = &#34;&#34;
+        if read_individual_files:
+            paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/*&#34;, recursive=True)
+        else:
+            paths_for_id = glob.glob(data_dir + &#34;/&#34; + id_number + &#34;/**/&#34;, recursive=True)
+
         for path_filter in path_filters:
             paths_for_id = [path for path in paths_for_id if path_filter in path]
         if paths_for_id:
@@ -142,16 +258,52 @@ in the same order as ids</dd>
 </details>
 </dd>
 <dt id="medpicpy.paths.get_paths_to_images"><code class="name flex">
-<span>def <span class="ident">get_paths_to_images</span></span>(<span>data_dir, extension)</span>
+<span>def <span class="ident">get_paths_to_images</span></span>(<span>data_dir, extension, path_filters=[''])</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Search directory and subdirectories for image with the given
+extension.</p>
+<p>Optionally takes a list of strings to be applied as filters
+to the path e.g. ["CT", "prone"] or ["flair"]. These paths
+can then be passed to load_images_from_paths.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data_dir</code></strong> :&ensp;<code>str</code></dt>
+<dd>path to root of dataset</dd>
+<dt><strong><code>extension</code></strong> :&ensp;<code>str</code></dt>
+<dd>file extension to search for</dd>
+<dt><strong><code>path_filters</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>filters to apply to paths. Defaults to [""].</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>list of paths to images</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_paths_to_images(data_dir, extension):
+<pre><code class="python">def get_paths_to_images(data_dir, extension, path_filters=[&#34;&#34;]):
+    &#34;&#34;&#34;Search directory and subdirectories for image with the given 
+    extension.
+
+    Optionally takes a list of strings to be applied as filters 
+    to the path e.g. [&#34;CT&#34;, &#34;prone&#34;] or [&#34;flair&#34;]. These paths 
+    can then be passed to load_images_from_paths.
+
+    Args:
+        data_dir (str): path to root of dataset
+        extension (str): file extension to search for
+        path_filters (list, optional): filters to apply to paths. Defaults to [&#34;&#34;].
+
+    Returns:
+        list: list of paths to images
+    &#34;&#34;&#34;
     paths = glob.glob(data_dir + &#34;/**/*&#34; + extension, recursive=True)
+    
+    if path_filters is not [&#34;&#34;]:
+        paths = filter_paths(paths, path_filters)
 
     return paths</code></pre>
 </details>
@@ -174,6 +326,7 @@ in the same order as ids</dd>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="medpicpy.paths.filter_paths" href="#medpicpy.paths.filter_paths">filter_paths</a></code></li>
 <li><code><a title="medpicpy.paths.get_paths_from_ids" href="#medpicpy.paths.get_paths_from_ids">get_paths_from_ids</a></code></li>
 <li><code><a title="medpicpy.paths.get_paths_to_images" href="#medpicpy.paths.get_paths_to_images">get_paths_to_images</a></code></li>
 </ul>
