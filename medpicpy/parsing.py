@@ -206,7 +206,6 @@ def load_scans_from_paths(
             final_image[i] = image
         
         temp_list.append(final_image)
-    print("here")
     return np.array(temp_list)
 
 #output shape is the shape for each image
