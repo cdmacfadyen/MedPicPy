@@ -10,6 +10,7 @@ can read many imaging formats.
 ### Table of Contents
 - [Why use MedPicPy?](#why-use-medpicpy)
 - [Installation](#installation)
+- [Basic Usage](#basic-usage)
 - [Code Example](#code-example)
   - [mini-MIAS Breast Cancer Classification](#mini-mias-breast-cancer-classification)
     - [Full Script](#full-script)
@@ -24,6 +25,18 @@ into a machine learning model.
 
 ## Installation
 todo
+
+## Basic Usage
+Generally for a machine learning dataset the 
+metadata about the image will be stored in a csv, in the 
+directory structure, or a combination of those two things. 
+This package has functions for obtaining paths to 
+images by searching a dataset for paths containing 
+certain strings (e.g. "CT" or "DX"). These paths can
+then be passed into a MedPicPy image loading function
+which takes the paths and returns the image data in 
+numpy format, ready to be used in a machine learning model. 
+See the examples below. 
 
 ## Code Example
 The [wiki page](https://github.com/cdmacfadyen/MedPicPy/wiki) contains 
