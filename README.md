@@ -1,4 +1,3 @@
-# MedPicPy
 MedPicPy is a Python library to simplify ingesting medical imaging 
 datasets for feeding in to deep learning pipelines. 
 
@@ -8,6 +7,14 @@ provides functions to abstract over these difficulties
 and turn the data into an easy to use Numpy array. 
 MedPicPy is built on SimpleITK and OpenCV so it 
 can read many imaging formats. 
+### Table of Contents
+- [Why use MedPicPy?](#why-use-medpicpy)
+- [Installation](#installation)
+- [Code Example](#code-example)
+- [mini-MIAS Breast Cancer Classification](#mini-mias-breast-cancer-classification)
+  - [Full Script](#full-script)
+- [API Reference](#api-reference)
+- [Contribute](#contribute)
 
 ## Why use MedPicPy?
 * Turns data straight into numpy array format which to be fed 
