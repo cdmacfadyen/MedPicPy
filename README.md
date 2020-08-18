@@ -11,8 +11,8 @@ can read many imaging formats.
 - [Why use MedPicPy?](#why-use-medpicpy)
 - [Installation](#installation)
 - [Code Example](#code-example)
-- [mini-MIAS Breast Cancer Classification](#mini-mias-breast-cancer-classification)
-  - [Full Script](#full-script)
+  - [mini-MIAS Breast Cancer Classification](#mini-mias-breast-cancer-classification)
+    - [Full Script](#full-script)
 - [API Reference](#api-reference)
 - [Contribute](#contribute)
 
@@ -31,7 +31,7 @@ several examples of how this can be used with different kinds of dataset.
 Here is an example of how to ingest the mini-MIAS dataset for 
 breast cancer segmentation. 
 
-## mini-MIAS Breast Cancer Classification
+### mini-MIAS Breast Cancer Classification
 You can find this dataset at [this link](http://peipa.essex.ac.uk/info/mias.html). It's small (~100Mb) so its a good place to get started with medical imaging data. Once you download it the metadata is contained in the README, so open that and copy it into a new file. For this example it has been moved into a file called `data.txt`. 
 
 Import pandas and medpicpy and read the data using pandas.
@@ -74,7 +74,7 @@ xs, ys, widths, heights = med.load_bounding_boxes_from_csv(
 You will probably want to convert your class data to a one-hot array, 
 sklearn's [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder) is 
 useful for this. 
-### Full Script
+#### Full Script
 See the full script here with a some simple visualisation code at the end.
 ```python
 import pandas as pd
