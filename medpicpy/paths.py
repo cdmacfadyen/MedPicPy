@@ -85,11 +85,11 @@ def get_paths_from_ids(data_dir,
             paths_for_id = [path for path in paths_for_id if path_filter in path]
         if paths_for_id:
             paths_for_id = remove_sub_paths(paths_for_id)
-        if not paths_for_id:    #TODO: doesn't work on a filter object
+        if not paths_for_id:
             paths.append(None)
             print("Warn: Could not find any paths for id {}".format(id_number))
         else:
-            paths.extend(paths_for_id)  #TODO: find the longest one per id
+            paths.extend(paths_for_id)
 
         
     return paths

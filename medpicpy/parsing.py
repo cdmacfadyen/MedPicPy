@@ -11,9 +11,6 @@ import cv2
 
 from . import io
 
-# opt args to add
-#   - resize keeps aspect ratio?
-#TODO: probably change it from taking a dataframe to taking an array (i.e. pd.Series)
 def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     """Read in an array of images from paths specified in a csv
 
@@ -40,7 +37,6 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     return image_array
     
     
-#TODO kind of useless since they already have the bounding boxes as arrays
 def load_bounding_boxes_from_csv(
     dataframe, 
     centre_x_column, 
@@ -208,10 +204,9 @@ def load_scans_from_paths(
         temp_list.append(final_image)
     return np.array(temp_list)
 
-#output shape is the shape for each image
-# TODO: we could also have it return the paths, or image 
-# names or something
 # get_all_slices_from_scans maybe
+# TODO: have it return an array containing the 
+# paths also
 def load_all_slices_from_series(paths, output_shape):
     """Reads a dataset of 2d images from a 3d series
 
@@ -271,7 +266,6 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     output_array_length = sum(series_lengths)
     output_array_shape = (output_array_length,) + output_shape
 
-    #TODO: duplicated code.
     array = np.zeros(output_array_shape)
 
     output_index = 0

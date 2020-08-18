@@ -8,10 +8,7 @@ import cv2
 import SimpleITK as sitk
 import numpy as np
 
-# TODO: Read more about SITK formats, probably 
-# want it to default to reading with SITK
-# then catch an exception then try with opencv.
-# one stop shop for image reading
+
 def load_image(path):
     """Load in any image or image series from a path
 
