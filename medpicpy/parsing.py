@@ -24,10 +24,6 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     Returns:
         np.Array: Array of images in order 
     """
-    array_length = len(dataframe[image_name_column])
-    array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
-    image_array = np.zeros(array_shape)
-
     image_names = dataframe[image_name_column]
     image_paths = image_names.apply(lambda x : image_dir_path + "/" + x)
     image_paths = image_paths.apply(lambda x : normpath(x))
