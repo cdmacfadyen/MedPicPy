@@ -11,6 +11,7 @@ import numpy as np
 import cv2
 
 from . import io
+from .utils import remove_sub_paths
 
 def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     """Read in an array of images from paths specified in a csv
@@ -81,6 +82,8 @@ def load_bounding_boxes_from_csv(
 # i.e. covid/im001 or no-covid/im001
 # pulls the class names from the path and reads in the images
 # as a numpy array
+# TODO: make this work for 3D images, either make a new function or 
+# add optional args (would be slice axis and slices to take)
 def load_classes_in_directory_name(directory, 
     image_extension, 
     output_shape, 
@@ -128,9 +131,9 @@ def load_classes_in_directory_name(directory,
     """
     path_to_search = directory + "/**/*" + image_extension
     files = glob.glob(path_to_search, recursive=True)
-
+    files = remove_sub_paths(files)
     number_of_files = len(files)
-    array_shape = (number_of_files,) + output_shape #concatonate the tuples
+    array_shape = (number_of_files,) + output_shape
     array = np.zeros(array_shape, dtype=np.int16)
     classes = np.empty(number_of_files, dtype=object)
 
