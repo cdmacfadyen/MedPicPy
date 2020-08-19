@@ -52,6 +52,29 @@ def load_bounding_boxes_from_csv(
     ): # for bounding boxes need to know if measurements are in pixels or mm
     """Read bounding boxes from dataframe of csv
 
+    ##Example
+    ```python
+    import medpicpy as med
+    import pandas as pd
+
+    description = pd.read_csv("data.csv") 
+
+    # x and y scale factor are new_image_size / original_image_size
+    # only set if the images were resized when being loaded in
+    x_scale_factor = 224 / 1024
+    y_scale_factor = 224 / 1024
+
+    xs, ys, widths, heights = med.load_bounding_boxes_from_csv(
+        description, 
+        4, 
+        5, 
+        6, 
+        6, 
+        x_scale_factor=x_scale_factor, 
+        y_scale_factor=y_scale_factor
+    )
+
+    ```
     Args:
         dataframe (pandas.DataFrame): Dataframe of csv
         centre_x_column (index): Index of column for x anchor or box
