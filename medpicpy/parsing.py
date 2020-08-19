@@ -4,6 +4,7 @@ in medical imaging data
 """
 import glob
 from pathlib import Path
+from os.path import normpath
 
 import pandas as pd
 import numpy as np
@@ -27,15 +28,13 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
     image_array = np.zeros(array_shape)
 
-    for i in range(0, array_length):
-        image_name = dataframe[image_name_column][i]
-        image_path = image_dir_path + image_name
-        image = io.load_image(image_path)
-        resized = cv2.resize(image, output_shape)
-        image_array[i] = resized
+    image_names = dataframe[image_name_column]
+    image_paths = image_names.apply(lambda x : image_dir_path + "/" + x)
+    image_paths = image_paths.apply(lambda x : normpath(x))
 
-    return image_array
-    
+    images = load_images_from_paths(image_paths, output_shape)
+    return images
+
     
 def load_bounding_boxes_from_csv(
     dataframe, 
