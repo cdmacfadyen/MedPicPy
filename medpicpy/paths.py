@@ -15,6 +15,10 @@ def get_paths_to_images(data_dir, extension, path_filters=[""]):
     to the path e.g. ["CT", "prone"] or ["flair"]. These paths 
     can then be passed to load_images_from_paths.
 
+    get_paths_from_ids is preferred where possible since 
+    this function could return results in a different order depending 
+    on the machine. 
+
     Args:
         data_dir (str): path to root of dataset
         extension (str): file extension to search for

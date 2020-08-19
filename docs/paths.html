@@ -52,6 +52,10 @@ def get_paths_to_images(data_dir, extension, path_filters=[&#34;&#34;]):
     to the path e.g. [&#34;CT&#34;, &#34;prone&#34;] or [&#34;flair&#34;]. These paths 
     can then be passed to load_images_from_paths.
 
+    get_paths_from_ids is preferred where possible since 
+    this function could return results in a different order depending 
+    on the machine. 
+
     Args:
         data_dir (str): path to root of dataset
         extension (str): file extension to search for
@@ -568,6 +572,9 @@ extension.</p>
 <p>Optionally takes a list of strings to be applied as filters
 to the path e.g. ["CT", "prone"] or ["flair"]. These paths
 can then be passed to load_images_from_paths.</p>
+<p>get_paths_from_ids is preferred where possible since
+this function could return results in a different order depending
+on the machine. </p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data_dir</code></strong> :&ensp;<code>str</code></dt>
@@ -593,6 +600,10 @@ can then be passed to load_images_from_paths.</p>
     Optionally takes a list of strings to be applied as filters 
     to the path e.g. [&#34;CT&#34;, &#34;prone&#34;] or [&#34;flair&#34;]. These paths 
     can then be passed to load_images_from_paths.
+
+    get_paths_from_ids is preferred where possible since 
+    this function could return results in a different order depending 
+    on the machine. 
 
     Args:
         data_dir (str): path to root of dataset
