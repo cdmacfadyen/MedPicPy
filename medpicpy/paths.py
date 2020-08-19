@@ -60,14 +60,106 @@ def get_paths_from_ids(data_dir,
     You may want to include the file extension in the 
     filters.
 
+    ## Example
+    If there is dataset with structure:
+    ```
+    data/
+        patient-data.csv
+        ID-001/
+            SCANS/
+                CT/
+                    prone.dcm
+                    supine.dcm
+                DX/
+                    scan.nii.gz
+        ID-002/
+            SCANS/
+                CT/
+                    prone.dcm
+                    supine.dcm
+                DX/
+                    scan.nii.gz
+        ID-003/
+            SCANS/
+                CT/
+                    prone.dcm
+                    supine.dcm
+                DX/
+                    scan.nii.gz
+    ```
+    then:
+    ```python
+    import pandas as pd
+    import medpicpy as med
+
+    description = pd.read_csv("data/patient-data.csv")
+    patient_ids = description("id")
+    filters = ["CT", "prone"]
+
+    image_paths = med.get_paths_from_ids(
+        "data/",
+        patient_ids,
+        filters
+    )
+
+    print(image_paths)
+    # ["data/ID-001/CT/prone.dcm", "data/ID-002/CT/prone.dcm", "data/ID-003/CT/prone.dcm"]
+    ```
+
+    With directory structure like so, with 
+    images in a dicom series then set read_individual_files=False:
+    ```
+    data/
+        patient-data.csv
+        ID-001/
+            SCANS/
+                CT/
+                    001.dcm
+                    002.dcm
+                DX/
+                    scan.nii.gz
+        ID-002/
+            SCANS/
+                CT/
+                    001.dcm
+                    002.dcm
+                DX/
+                    scan.nii.gz
+        ID-003/
+            SCANS/
+                CT/
+                    001.dcm
+                    002.dcm
+                DX/
+                    scan.nii.gz
+    ```
+    then:
+    ```python
+    import pandas as pd
+    import medpicpy as med
+
+    description = pd.read_csv("data/patient-data.csv")
+    patient_ids = description("id")
+    filters = ["CT"]
+
+    image_paths = med.get_paths_from_ids(
+        "data/",
+        patient_ids,
+        filters,
+        read_individual_files=False
+    )
+
+    print(image_paths)
+    # ["data/ID-001/CT/", "data/ID-002/CT/", "data/ID-003/CT/"]
+    ```
     Args:
         data_dir (str): path to dataset
         ids (list or array-like): list of ids to read in, assuming each 
-        id is a directory in the dataset (e.g. TCIA datasets)
+            id is a directory in the dataset (e.g. TCIA datasets)
         path_filters (list, optional): Any filters to apply to the path.
             Defaults to [""].
-        read_individual_files(bool, optional): specifies to look for 
-            individual files or directories. Defaults to True
+        read_individual_files (bool, optional): specifies to look for 
+            individual files or directories. Defaults to True.
 
     Returns:
         array: All paths that match the ids with filters, 
