@@ -263,8 +263,8 @@ def load_all_slices_from_series(paths, output_shape):
 
     return array
 
-#TODO: for this one we do know the output size ahead of time 
-# so we can make this faster
+# TODO: we can remove this and just have
+# load_scans_from_paths
 def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     """Get specific slice or slices from series of scans.
     Takes path, desired shape and array of slice/slices to 
