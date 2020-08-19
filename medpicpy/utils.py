@@ -16,5 +16,6 @@ def remove_sub_paths(paths):
         for other in paths:
             if path in other and path != other:
                 paths.remove(path)
+                break
     
     return paths
