@@ -41,6 +41,7 @@ in medical imaging data
 &#34;&#34;&#34;
 import glob
 from pathlib import Path
+from os.path import normpath
 
 import pandas as pd
 import numpy as np
@@ -64,15 +65,13 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
     image_array = np.zeros(array_shape)
 
-    for i in range(0, array_length):
-        image_name = dataframe[image_name_column][i]
-        image_path = image_dir_path + image_name
-        image = io.load_image(image_path)
-        resized = cv2.resize(image, output_shape)
-        image_array[i] = resized
+    image_names = dataframe[image_name_column]
+    image_paths = image_names.apply(lambda x : image_dir_path + &#34;/&#34; + x)
+    image_paths = image_paths.apply(lambda x : normpath(x))
 
-    return image_array
-    
+    images = load_images_from_paths(image_paths, output_shape)
+    return images
+
     
 def load_bounding_boxes_from_csv(
     dataframe, 
@@ -553,14 +552,12 @@ contains class name. Defaults to 1.</dd>
     array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
     image_array = np.zeros(array_shape)
 
-    for i in range(0, array_length):
-        image_name = dataframe[image_name_column][i]
-        image_path = image_dir_path + image_name
-        image = io.load_image(image_path)
-        resized = cv2.resize(image, output_shape)
-        image_array[i] = resized
+    image_names = dataframe[image_name_column]
+    image_paths = image_names.apply(lambda x : image_dir_path + &#34;/&#34; + x)
+    image_paths = image_paths.apply(lambda x : normpath(x))
 
-    return image_array</code></pre>
+    images = load_images_from_paths(image_paths, output_shape)
+    return images</code></pre>
 </details>
 </dd>
 <dt id="medpicpy.parsing.load_images_from_paths"><code class="name flex">
