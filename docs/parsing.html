@@ -137,7 +137,9 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     ```
     then:
     ```python
-        classes, images = load_classes_in_directory_name(
+        import medpicpy as med
+        
+        classes, images = med.load_classes_in_directory_name(
             &#34;dataset/&#34;,
             &#34;*.dcm&#34;,
             &#34;(128, 128)&#34;
@@ -231,6 +233,8 @@ def load_scans_from_paths(
     For any scans with one channel (grayscale) slices this should 
     be -2, if there is a colour channel (or its some kind 
     of multimodal stack) then the axis would be -3. 
+
+    ## Example
 
     Args:
         paths (list): list of paths to the scans to load
@@ -490,7 +494,9 @@ in the dataset structure. </p>
         im002.dcm
 </code></pre>
 <p>then:</p>
-<pre><code class="python">    classes, images = load_classes_in_directory_name(
+<pre><code class="python">    import medpicpy as med
+
+    classes, images = med.load_classes_in_directory_name(
         &quot;dataset/&quot;,
         &quot;*.dcm&quot;,
         &quot;(128, 128)&quot;
@@ -538,7 +544,9 @@ contains class name. Defaults to 1.</dd>
     ```
     then:
     ```python
-        classes, images = load_classes_in_directory_name(
+        import medpicpy as med
+        
+        classes, images = med.load_classes_in_directory_name(
             &#34;dataset/&#34;,
             &#34;*.dcm&#34;,
             &#34;(128, 128)&#34;
@@ -694,6 +702,7 @@ pass range(0, 60). </p>
 For any scans with one channel (grayscale) slices this should
 be -2, if there is a colour channel (or its some kind
 of multimodal stack) then the axis would be -3. </p>
+<h2 id="example">Example</h2>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>paths</code></strong> :&ensp;<code>list</code></dt>
@@ -733,6 +742,8 @@ of multimodal stack) then the axis would be -3. </p>
     For any scans with one channel (grayscale) slices this should 
     be -2, if there is a colour channel (or its some kind 
     of multimodal stack) then the axis would be -3. 
+
+    ## Example
 
     Args:
         paths (list): list of paths to the scans to load

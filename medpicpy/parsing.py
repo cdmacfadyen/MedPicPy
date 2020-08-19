@@ -100,7 +100,9 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     ```
     then:
     ```python
-        classes, images = load_classes_in_directory_name(
+        import medpicpy as med
+        
+        classes, images = med.load_classes_in_directory_name(
             "dataset/",
             "*.dcm",
             "(128, 128)"
@@ -194,6 +196,8 @@ def load_scans_from_paths(
     For any scans with one channel (grayscale) slices this should 
     be -2, if there is a colour channel (or its some kind 
     of multimodal stack) then the axis would be -3. 
+
+    ## Example
 
     Args:
         paths (list): list of paths to the scans to load
