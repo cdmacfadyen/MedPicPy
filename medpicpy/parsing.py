@@ -81,7 +81,10 @@ def load_bounding_boxes_from_csv(
 # i.e. covid/im001 or no-covid/im001
 # pulls the class names from the path and reads in the images
 # as a numpy array
-def load_classes_in_directory_name(directory, image_file_wildcard, output_shape, class_level=1):
+def load_classes_in_directory_name(directory, 
+    image_extension, 
+    output_shape, 
+    class_level=1):
     """Parse datasets where the class name is in the 
     directory structure
 
@@ -104,7 +107,7 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
         
         classes, images = med.load_classes_in_directory_name(
             "dataset/",
-            "*.dcm",
+            ".dcm",
             "(128, 128)"
         )
         print(classes)
@@ -114,7 +117,7 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     ```
     Args:
         directory (path): root directory of dataset
-        image_file_wildcard (str): Wildcard for identifying images,
+        image_extension (str): Wildcard for identifying images,
              e.g for png's - *.png
         output_shape (tuple): Desired output shape of images
         class_level (int, optional): Which level of directory structure 
@@ -123,7 +126,7 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     Returns:
         list(str), np.Array : list of classes and corresponding images with correct shape
     """
-    path_to_search = directory + "/**/" + image_file_wildcard
+    path_to_search = directory + "/**/*" + image_extension
     files = glob.glob(path_to_search, recursive=True)
 
     number_of_files = len(files)
