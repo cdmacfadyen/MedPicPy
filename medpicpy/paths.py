@@ -35,7 +35,15 @@ def filter_paths(paths, filters):
     paths containing all of the given filters.
 
     Used by get_paths_to_images.
-
+    ## Example
+    ```python
+    import medpicpy as med
+    paths = ["data/ID-001/PRONE/1.dcm", "data/ID-001/SUPINE/1.dcm", "data/ID-002/PRONE/1.dcm", "data/ID-002/SUPINE/1.dcm"]
+    filters = ["PRONE"]
+    paths = med.filter_paths(paths, filters)
+    print(paths)
+    # ["data/ID-001/PRONE/1.dcm", "data/ID-002/PRONE/1.dcm"]
+    ```
     Args:
         paths (array): array of paths
         filters (array): filters paths must contain

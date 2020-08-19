@@ -72,7 +72,15 @@ def filter_paths(paths, filters):
     paths containing all of the given filters.
 
     Used by get_paths_to_images.
-
+    ## Example
+    ```python
+    import medpicpy as med
+    paths = [&#34;data/ID-001/PRONE/1.dcm&#34;, &#34;data/ID-001/SUPINE/1.dcm&#34;, &#34;data/ID-002/PRONE/1.dcm&#34;, &#34;data/ID-002/SUPINE/1.dcm&#34;]
+    filters = [&#34;PRONE&#34;]
+    paths = med.filter_paths(paths, filters)
+    print(paths)
+    # [&#34;data/ID-001/PRONE/1.dcm&#34;, &#34;data/ID-002/PRONE/1.dcm&#34;]
+    ```
     Args:
         paths (array): array of paths
         filters (array): filters paths must contain
@@ -238,6 +246,14 @@ def get_paths_from_ids(data_dir,
 <div class="desc"><p>Filters a list of paths so it only contains
 paths containing all of the given filters.</p>
 <p>Used by get_paths_to_images.</p>
+<h2 id="example">Example</h2>
+<pre><code class="python">import medpicpy as med
+paths = [&quot;data/ID-001/PRONE/1.dcm&quot;, &quot;data/ID-001/SUPINE/1.dcm&quot;, &quot;data/ID-002/PRONE/1.dcm&quot;, &quot;data/ID-002/SUPINE/1.dcm&quot;]
+filters = [&quot;PRONE&quot;]
+paths = med.filter_paths(paths, filters)
+print(paths)
+# [&quot;data/ID-001/PRONE/1.dcm&quot;, &quot;data/ID-002/PRONE/1.dcm&quot;]
+</code></pre>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>paths</code></strong> :&ensp;<code>array</code></dt>
@@ -259,7 +275,15 @@ paths containing all of the given filters.</p>
     paths containing all of the given filters.
 
     Used by get_paths_to_images.
-
+    ## Example
+    ```python
+    import medpicpy as med
+    paths = [&#34;data/ID-001/PRONE/1.dcm&#34;, &#34;data/ID-001/SUPINE/1.dcm&#34;, &#34;data/ID-002/PRONE/1.dcm&#34;, &#34;data/ID-002/SUPINE/1.dcm&#34;]
+    filters = [&#34;PRONE&#34;]
+    paths = med.filter_paths(paths, filters)
+    print(paths)
+    # [&#34;data/ID-001/PRONE/1.dcm&#34;, &#34;data/ID-002/PRONE/1.dcm&#34;]
+    ```
     Args:
         paths (array): array of paths
         filters (array): filters paths must contain
