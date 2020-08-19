@@ -204,7 +204,53 @@ def load_scans_from_paths(
     of multimodal stack) then the axis would be -3. 
 
     ## Example
+    If there is dataset with structure:
+    ```
+    data/
+        patient-data.csv
+        ID-001/
+            SCANS/
+                CT/
+                    prone.nii.gz
+        ID-002/
+            SCANS/
+                CT/
+                    prone.nii.gz
+        ID-003/
+            SCANS/
+                CT/
+                    prone.nii.gz
+    ```
+    then:
+    ```python
+    import pandas as pd
+    import medpicpy as med
 
+    description = pd.read_csv("data/patient-data.csv")
+    patient_ids = description("id")
+    filters = ["CT", "prone"]
+
+    image_paths = med.get_paths_from_ids(
+        "data/",
+        patient_ids,
+        filters
+    )
+
+    print(image_paths)
+    # ["data/ID-001/CT/prone.nii.gz", "data/ID-002/CT/prone.nii.gz", "data/ID-003/CT/prone.nii.gz"]
+    
+    slices_to_take = range(60, 120)
+    output_slice_shape = (128, 128)    # desired shape of each slice in the scan
+    images = med.load_scans_from_paths(
+        paths, 
+        output_slice_shape,
+        slices_to_take
+        )
+
+    print(images.shape)
+    # (3, 60, 128, 128)  
+    ```
+    
     Args:
         paths (list): list of paths to the scans to load
         slice_output_shape (tuple): shape each slice should be resized to
@@ -308,4 +354,56 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     return array
 
 def stack_modalities(arrays, axis=-1):
+    """Turn a list of arrays into one multimodal array.
+    
+    Creates one array where each element has 
+    len(arrays) images. 
+
+    ##Example
+    If we have a dataset like:
+    ```
+    dataset/
+        ID-1/
+            flair.nii.gz
+            t1.nii.gz
+        ID-2/
+            flair.nii.gz
+            t1.nii.gz
+    ```
+    then:
+    ```python
+    import medpicpy as med 
+    modalities = [["flair"], ["t1"]]
+    paths_for_modality = [med.get_paths_from_ids(
+        "dataset/",
+        ["ID-1", "ID-2"],
+        path_filters = modality
+    ) for modality in modalities]
+
+    arrays = [med.load_scans_from_paths(
+        paths,
+        (128, 128),
+        range(60, 80)
+    ) for paths in paths_for_modality]
+
+    multimodal_array = med.stack_modalities(arrays)
+    print(multimodal_array.shape)
+    # (259, 20, 128, 128, 4)
+    ```
+    You might want to flatten along the first axis after 
+    doing this depending on the dimensionality of the model you are using.
+    ```python
+    flat_multi_modal = multimodal_array.reshape(-1, *multimodal_array.shape[2:])
+    print("multi modal shape: ", flat_multi_modal.shape)
+    # (5180, 128, 128, 4)
+    ```
+    Args:
+        arrays (array): array of arrays of images to stack on 
+            top of each other
+        axis (int, optional): The axis to stack along, 
+            leaving this default is probably fine. Defaults to -1.
+
+    Returns:
+        array: the arrays stacked on top of each other
+    """
     return np.stack(arrays, axis=axis)
