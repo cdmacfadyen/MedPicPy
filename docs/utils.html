@@ -51,6 +51,7 @@ def remove_sub_paths(paths):
         for other in paths:
             if path in other and path != other:
                 paths.remove(path)
+                break
     
     return paths</code></pre>
 </details>
@@ -98,6 +99,7 @@ paths that are a part of other paths.</p>
         for other in paths:
             if path in other and path != other:
                 paths.remove(path)
+                break
     
     return paths</code></pre>
 </details>

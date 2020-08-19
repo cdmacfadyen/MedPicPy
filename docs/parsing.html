@@ -48,6 +48,7 @@ import numpy as np
 import cv2
 
 from . import io
+from .utils import remove_sub_paths
 
 def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     &#34;&#34;&#34;Read in an array of images from paths specified in a csv
@@ -118,6 +119,8 @@ def load_bounding_boxes_from_csv(
 # i.e. covid/im001 or no-covid/im001
 # pulls the class names from the path and reads in the images
 # as a numpy array
+# TODO: make this work for 3D images, either make a new function or 
+# add optional args (would be slice axis and slices to take)
 def load_classes_in_directory_name(directory, 
     image_extension, 
     output_shape, 
@@ -165,9 +168,9 @@ def load_classes_in_directory_name(directory,
     &#34;&#34;&#34;
     path_to_search = directory + &#34;/**/*&#34; + image_extension
     files = glob.glob(path_to_search, recursive=True)
-
+    files = remove_sub_paths(files)
     number_of_files = len(files)
-    array_shape = (number_of_files,) + output_shape #concatonate the tuples
+    array_shape = (number_of_files,) + output_shape
     array = np.zeros(array_shape, dtype=np.int16)
     classes = np.empty(number_of_files, dtype=object)
 
@@ -297,8 +300,8 @@ def load_all_slices_from_series(paths, output_shape):
 
     return array
 
-#TODO: for this one we do know the output size ahead of time 
-# so we can make this faster
+# TODO: we can remove this and just have
+# load_scans_from_paths
 def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     &#34;&#34;&#34;Get specific slice or slices from series of scans.
     Takes path, desired shape and array of slice/slices to 
@@ -575,9 +578,9 @@ contains class name. Defaults to 1.</dd>
     &#34;&#34;&#34;
     path_to_search = directory + &#34;/**/*&#34; + image_extension
     files = glob.glob(path_to_search, recursive=True)
-
+    files = remove_sub_paths(files)
     number_of_files = len(files)
-    array_shape = (number_of_files,) + output_shape #concatonate the tuples
+    array_shape = (number_of_files,) + output_shape
     array = np.zeros(array_shape, dtype=np.int16)
     classes = np.empty(number_of_files, dtype=object)
 
