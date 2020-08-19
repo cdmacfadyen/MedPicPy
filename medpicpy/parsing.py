@@ -85,6 +85,31 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     """Parse datasets where the class name is in the 
     directory structure
 
+    Use this when the class name is one of the directory names
+    in the dataset structure. 
+    ## Example
+    If dataset has directory structure:
+    ```
+    dataset/
+        benign/
+            im001.dcm
+            im002.dcm
+        malignant/
+            im001.dcm
+            im002.dcm
+    ```
+    then:
+    ```python
+        classes, images = load_classes_in_directory_name(
+            "dataset/",
+            "*.dcm",
+            "(128, 128)"
+        )
+        print(classes)
+        # ["benign", "benign", "malignant", "malignant"]
+        print(images.shape)
+        # (4, 128, 128)
+    ```
     Args:
         directory (path): root directory of dataset
         image_file_wildcard (str): Wildcard for identifying images,

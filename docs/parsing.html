@@ -61,10 +61,6 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     Returns:
         np.Array: Array of images in order 
     &#34;&#34;&#34;
-    array_length = len(dataframe[image_name_column])
-    array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
-    image_array = np.zeros(array_shape)
-
     image_names = dataframe[image_name_column]
     image_paths = image_names.apply(lambda x : image_dir_path + &#34;/&#34; + x)
     image_paths = image_paths.apply(lambda x : normpath(x))
@@ -126,6 +122,31 @@ def load_classes_in_directory_name(directory, image_file_wildcard, output_shape,
     &#34;&#34;&#34;Parse datasets where the class name is in the 
     directory structure
 
+    Use this when the class name is one of the directory names
+    in the dataset structure. 
+    ## Example
+    If dataset has directory structure:
+    ```
+    dataset/
+        benign/
+            im001.dcm
+            im002.dcm
+        malignant/
+            im001.dcm
+            im002.dcm
+    ```
+    then:
+    ```python
+        classes, images = load_classes_in_directory_name(
+            &#34;dataset/&#34;,
+            &#34;*.dcm&#34;,
+            &#34;(128, 128)&#34;
+        )
+        print(classes)
+        # [&#34;benign&#34;, &#34;benign&#34;, &#34;malignant&#34;, &#34;malignant&#34;]
+        print(images.shape)
+        # (4, 128, 128)
+    ```
     Args:
         directory (path): root directory of dataset
         image_file_wildcard (str): Wildcard for identifying images,
@@ -456,6 +477,29 @@ Can be same as width column for squares or circles.</dd>
 <dd>
 <div class="desc"><p>Parse datasets where the class name is in the
 directory structure</p>
+<p>Use this when the class name is one of the directory names
+in the dataset structure. </p>
+<h2 id="example">Example</h2>
+<p>If dataset has directory structure:</p>
+<pre><code>dataset/
+    benign/
+        im001.dcm
+        im002.dcm
+    malignant/
+        im001.dcm
+        im002.dcm
+</code></pre>
+<p>then:</p>
+<pre><code class="python">    classes, images = load_classes_in_directory_name(
+        &quot;dataset/&quot;,
+        &quot;*.dcm&quot;,
+        &quot;(128, 128)&quot;
+    )
+    print(classes)
+    # [&quot;benign&quot;, &quot;benign&quot;, &quot;malignant&quot;, &quot;malignant&quot;]
+    print(images.shape)
+    # (4, 128, 128)
+</code></pre>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>directory</code></strong> :&ensp;<code>path</code></dt>
@@ -479,6 +523,31 @@ contains class name. Defaults to 1.</dd>
     &#34;&#34;&#34;Parse datasets where the class name is in the 
     directory structure
 
+    Use this when the class name is one of the directory names
+    in the dataset structure. 
+    ## Example
+    If dataset has directory structure:
+    ```
+    dataset/
+        benign/
+            im001.dcm
+            im002.dcm
+        malignant/
+            im001.dcm
+            im002.dcm
+    ```
+    then:
+    ```python
+        classes, images = load_classes_in_directory_name(
+            &#34;dataset/&#34;,
+            &#34;*.dcm&#34;,
+            &#34;(128, 128)&#34;
+        )
+        print(classes)
+        # [&#34;benign&#34;, &#34;benign&#34;, &#34;malignant&#34;, &#34;malignant&#34;]
+        print(images.shape)
+        # (4, 128, 128)
+    ```
     Args:
         directory (path): root directory of dataset
         image_file_wildcard (str): Wildcard for identifying images,
@@ -548,10 +617,6 @@ contains class name. Defaults to 1.</dd>
     Returns:
         np.Array: Array of images in order 
     &#34;&#34;&#34;
-    array_length = len(dataframe[image_name_column])
-    array_shape = (array_length,) + output_shape    # needs to be a tuple to concatenate
-    image_array = np.zeros(array_shape)
-
     image_names = dataframe[image_name_column]
     image_paths = image_names.apply(lambda x : image_dir_path + &#34;/&#34; + x)
     image_paths = image_paths.apply(lambda x : normpath(x))
