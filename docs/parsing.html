@@ -53,6 +53,14 @@ from .utils import remove_sub_paths
 def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     &#34;&#34;&#34;Read in an array of images from paths specified in a csv
 
+    ##Example
+    ```python
+    import medpicpy as med
+    import pandas as pd
+
+    description = pd.read_csv(&#34;data.csv&#34;) 
+    array = med.load_images_from_csv(description, 0, &#34;mini-MIAS/&#34;, (224, 224))
+    ```
     Args:
         dataframe (pandas.DataFrame): A pandas dataframe from the csv
         image_name_column (index): Index of column with image names
@@ -700,6 +708,13 @@ contains class name. Defaults to 1.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Read in an array of images from paths specified in a csv</p>
+<h2 id="example">Example</h2>
+<pre><code class="python">import medpicpy as med
+import pandas as pd
+
+description = pd.read_csv(&quot;data.csv&quot;) 
+array = med.load_images_from_csv(description, 0, &quot;mini-MIAS/&quot;, (224, 224))
+</code></pre>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>dataframe</code></strong> :&ensp;<code>pandas.DataFrame</code></dt>
@@ -723,6 +738,14 @@ contains class name. Defaults to 1.</dd>
 <pre><code class="python">def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     &#34;&#34;&#34;Read in an array of images from paths specified in a csv
 
+    ##Example
+    ```python
+    import medpicpy as med
+    import pandas as pd
+
+    description = pd.read_csv(&#34;data.csv&#34;) 
+    array = med.load_images_from_csv(description, 0, &#34;mini-MIAS/&#34;, (224, 224))
+    ```
     Args:
         dataframe (pandas.DataFrame): A pandas dataframe from the csv
         image_name_column (index): Index of column with image names

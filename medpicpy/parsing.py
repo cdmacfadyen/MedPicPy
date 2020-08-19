@@ -16,6 +16,14 @@ from .utils import remove_sub_paths
 def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
     """Read in an array of images from paths specified in a csv
 
+    ##Example
+    ```python
+    import medpicpy as med
+    import pandas as pd
+
+    description = pd.read_csv("data.csv") 
+    array = med.load_images_from_csv(description, 0, "mini-MIAS/", (224, 224))
+    ```
     Args:
         dataframe (pandas.DataFrame): A pandas dataframe from the csv
         image_name_column (index): Index of column with image names
