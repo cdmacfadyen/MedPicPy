@@ -145,3 +145,7 @@ Feel free to contribute! Check out the issues if you
 want to find something to do, or add an issue if you think the 
 package could be extended. Pull requests will be accepted provided 
 they don't break anything and the feature is easy to use. 
+
+Please ensure that all modules/functions added have docstrings, ideally
+with an example usage and then run `./scripts/makedocs.sh` to add the 
+documentation to the pages site.
