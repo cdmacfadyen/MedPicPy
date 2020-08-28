@@ -14,7 +14,11 @@ import dask.array as da
 from . import io
 from .utils import remove_sub_paths
 
-def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
+def load_images_from_csv(dataframe, 
+image_name_column, 
+image_dir_path, 
+output_shape,
+use_memory_mapping=False):
     """Read in an array of images from paths specified in a csv
 
     ##Example
@@ -38,7 +42,7 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     image_paths = image_names.apply(lambda x : image_dir_path + "/" + x)
     image_paths = image_paths.apply(lambda x : normpath(x))
 
-    images = load_images_from_paths(image_paths, output_shape)
+    images = load_images_from_paths(image_paths, output_shape, use_memory_mapping=use_memory_mapping)
     return images
 
     
@@ -183,7 +187,7 @@ def load_classes_in_directory_name(directory,
 
 
 
-def load_images_from_paths(paths, output_shape):
+def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     """2D image loading function that takes an array of 
     paths and an output shape and returns the images in 
     the same order as the paths. Requires every 
@@ -201,11 +205,11 @@ def load_images_from_paths(paths, output_shape):
     """
     array_length = len(paths)
     array_shape = (array_length,) + output_shape # concat tuples to get shape
-    image_array = np.memmap("images.dat", mode="w+", dtype="float32", shape=array_shape)
+    image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
         image_name = paths[i]
-        image = io.load_image(image_name)
+        image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
     

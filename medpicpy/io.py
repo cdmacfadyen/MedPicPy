@@ -40,7 +40,7 @@ def load_image(path, use_memory_mapping=False):
             image_as_array = sitk.GetArrayFromImage(image)
     
     if use_memory_mapping:
-        mmap_name = str(mmap_counter) + ".dat"
+        mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)
         mmap[:] = image_as_array[:]
         return mmap
@@ -64,7 +64,7 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
     array = sitk.GetArrayFromImage(image)
 
     if use_memory_mapping:
-        mmap_name = str(mmap_counter) + ".dat"
+        mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)
         mmap[:] = image_as_array[:]
         return mmap
@@ -73,9 +73,15 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
 
 def allocate_array(shape, use_memory_mapping=False):
     if use_memory_mapping:
-        mmap_name = str(mmap_counter) + ".dat"
+        mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=shape)
-        mmap_counter += 1
         return mmap
     else:
         return np.zeros(shape)
+
+def get_counter_and_update():
+    global mmap_counter
+    val = mmap_counter
+    path = "medpicpy_cache/" + str(val) + ".dat"
+    mmap_counter += 1
+    return path
