@@ -9,6 +9,7 @@ from os.path import normpath
 import pandas as pd
 import numpy as np
 import cv2
+import dask.array as da
 
 from . import io
 from .utils import remove_sub_paths
@@ -200,7 +201,7 @@ def load_images_from_paths(paths, output_shape):
     """
     array_length = len(paths)
     array_shape = (array_length,) + output_shape # concat tuples to get shape
-    image_array = np.zeros(array_shape)
+    image_array = np.memmap("images.dat", mode="w+", dtype="float32", shape=array_shape)
 
     for i in range(0, array_length):
         image_name = paths[i]
@@ -314,7 +315,9 @@ def load_scans_from_paths(
 # get_all_slices_from_scans maybe
 # TODO: have it return an array containing the 
 # paths also
-def load_all_slices_from_series(paths, output_shape):
+def load_all_slices_from_series(paths, 
+    output_shape,
+    use_memory_mapping=True):
     """Reads a dataset of 2d images from a 3d series
 
     Args:
@@ -325,20 +328,22 @@ def load_all_slices_from_series(paths, output_shape):
         numpy.Array: array containing the reshaped slices
     """
     all_series = [io.load_image(path) for path in paths]
+    print("finished reading all series")
     reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
     series_lengths = [len(series) for series in reshaped]
     output_array_length = sum(series_lengths)
     output_array_shape = (output_array_length,) + output_shape
     array = np.zeros(output_array_shape)
 
+    # array = da.zeros(output_array_shape, chunks="auto")
     output_index = 0
     for series_counter in range(0, len(series_lengths)):
         for image_counter in range(0, series_lengths[series_counter]):
             array[output_index] = reshaped[series_counter][image_counter]
             output_index += 1
     
-
     return array
+    # return array.compute()
 
 def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     """Get specific slice or slices from series of scans.

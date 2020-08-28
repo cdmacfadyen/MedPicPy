@@ -18,6 +18,7 @@ def load_image(path):
     Returns:
         np.Array: image in numpy format
     """
+    print("reading " + path)
     image_name = ntpath.basename(path)
     image_as_array = None
 
@@ -37,7 +38,9 @@ def load_image(path):
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
     
-    return image_as_array
+    mmap = np.memmap(path + ".dat", dtype=np.float32, mode="w+", shape=image_as_array.shape)
+    mmap[:] = image_as_array[:]
+    return mmap
 
 
 def load_series(path): # for more than 2d dicoms. 
@@ -54,4 +57,7 @@ def load_series(path): # for more than 2d dicoms.
     series_reader.SetFileNames(file_names)
     image = series_reader.Execute()
     array = sitk.GetArrayFromImage(image)
-    return array
+
+    mmap = np.memmap(path + ".dat", dtype=np.float32, mode="w+", shape=array.shape)
+    mmap[:] = array[:]
+    return mmap
