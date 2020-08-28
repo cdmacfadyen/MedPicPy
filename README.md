@@ -4,7 +4,8 @@ datasets for feeding in to deep learning pipelines.
 Medical imaging datasets can be difficult to read in with many 
 different file formats and dataset structures. MedPicPy
 allows you to quickly get up and running with a dataset 
-so you can get results easily. 
+so you can get initial results and see how changes affect 
+them. 
 ### Table of Contents
 - [Why use MedPicPy?](#why-use-medpicpy)
 - [Installation](#installation)
