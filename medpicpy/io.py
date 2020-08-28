@@ -65,8 +65,8 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
 
     if use_memory_mapping:
         mmap_name = get_counter_and_update()
-        mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)
-        mmap[:] = image_as_array[:]
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=array.shape)
+        mmap[:] = array[:]
         return mmap
     else:
         return array
