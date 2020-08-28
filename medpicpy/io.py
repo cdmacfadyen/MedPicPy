@@ -24,7 +24,7 @@ def load_image(path, use_memory_mapping=False):
     image_as_array = None
 
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
-        series = load_series(path)
+        series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
     extension = image_name.split(".")[1]
@@ -48,7 +48,7 @@ def load_image(path, use_memory_mapping=False):
         return image_as_array
 
 
-def load_series(path): # for more than 2d dicoms. 
+def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     """Load an image series from a directory(e.g. dicom)
 
     Args:
