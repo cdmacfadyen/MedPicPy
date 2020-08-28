@@ -3,10 +3,8 @@ datasets for feeding in to deep learning pipelines.
 
 Medical imaging datasets can be difficult to read in with many 
 different file formats and dataset structures. MedPicPy
-provides functions to abstract over these difficulties 
-and turn the data into an easy to use Numpy array. 
-MedPicPy is built on SimpleITK and OpenCV so it 
-can read many imaging formats. 
+allows you to quickly get up and running with a dataset 
+so you can get results easily. 
 ### Table of Contents
 - [Why use MedPicPy?](#why-use-medpicpy)
 - [Installation](#installation)
