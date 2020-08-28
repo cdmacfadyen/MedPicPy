@@ -189,7 +189,7 @@ def load_images_from_paths(paths, output_shape):
     path to have an image and every image to be resizeable 
     to the given output shape.
 
-    For higher dimension images use load_scans_from_paths.
+    For higher dimension images use load_series_from_paths.
 
     Args:
         paths (list or array-like): paths of images to load
@@ -214,7 +214,7 @@ def load_images_from_paths(paths, output_shape):
 # are 1 channel, for colour images would probably be -3
 # But I don't think you get colour 3D scans
 # It would work for multimodal things stacked on top of each other though
-def load_scans_from_paths(
+def load_series_from_paths(
     paths,
     slice_output_shape, 
     slices_to_take,
@@ -272,7 +272,7 @@ def load_scans_from_paths(
     
     slices_to_take = range(60, 120)
     output_slice_shape = (128, 128)    # desired shape of each slice in the scan
-    images = med.load_scans_from_paths(
+    images = med.load_series_from_paths(
         paths, 
         output_slice_shape,
         slices_to_take
@@ -409,7 +409,7 @@ def stack_modalities(arrays, axis=-1):
         path_filters = modality
     ) for modality in modalities]
 
-    arrays = [med.load_scans_from_paths(
+    arrays = [med.load_series_from_paths(
         paths,
         (128, 128),
         range(60, 80)
