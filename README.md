@@ -22,7 +22,13 @@ into a machine learning model.
 * Simple functions that work with 2D, 3D or higher dimensional data.
 
 ## Installation
-todo
+```
+git clone https://github.com/cdmacfadyen/MedPicPy
+python -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r MedPicPy/requirements.txt
+```
 
 ## Basic Usage
 Generally for a machine learning dataset the 
