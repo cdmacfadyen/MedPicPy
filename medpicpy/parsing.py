@@ -118,7 +118,9 @@ def load_bounding_boxes_from_csv(
 def load_classes_in_directory_name(directory, 
     image_extension, 
     output_shape, 
-    class_level=1):
+    class_level=1,
+    slices_to_take=None,
+    slice_axis=-2):
     """Parse datasets where the class name is in the 
     directory structure
 
@@ -165,7 +167,7 @@ def load_classes_in_directory_name(directory,
     files = remove_sub_paths(files)
     number_of_files = len(files)
     array_shape = (number_of_files,) + output_shape
-    array = np.zeros(array_shape, dtype=np.int16)
+    array = np.zeros(array_shape, dtype=np.float32)
     classes = np.empty(number_of_files, dtype=object)
 
     for index, name in enumerate(files):
