@@ -72,6 +72,15 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
         return array
 
 def allocate_array(shape, use_memory_mapping=False):
+    """Allocates space for a numpy array, and abstracts over memory mapping.
+
+    Args:
+        shape (tuple): shape of numpy array
+        use_memory_mapping (bool, optional): Store array on disk instead of in memory. Defaults to False.
+
+    Returns:
+        np.array: numpy array with given shape. 
+    """
     if use_memory_mapping:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=shape)
