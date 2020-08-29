@@ -8,8 +8,9 @@ import cv2
 import SimpleITK as sitk
 import numpy as np
 
+mmap_counter = 0
 
-def load_image(path):
+def load_image(path, use_memory_mapping=False):
     """Load in any image or image series from a path
 
     Args:
@@ -18,11 +19,12 @@ def load_image(path):
     Returns:
         np.Array: image in numpy format
     """
+    print("reading " + path)
     image_name = ntpath.basename(path)
     image_as_array = None
 
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
-        series = load_series(path)
+        series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
     extension = image_name.split(".")[1]
@@ -37,10 +39,16 @@ def load_image(path):
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
     
-    return image_as_array
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)
+        mmap[:] = image_as_array[:]
+        return mmap
+    else:
+        return image_as_array
 
 
-def load_series(path): # for more than 2d dicoms. 
+def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     """Load an image series from a directory(e.g. dicom)
 
     Args:
@@ -54,4 +62,26 @@ def load_series(path): # for more than 2d dicoms.
     series_reader.SetFileNames(file_names)
     image = series_reader.Execute()
     array = sitk.GetArrayFromImage(image)
-    return array
+
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=array.shape)
+        mmap[:] = array[:]
+        return mmap
+    else:
+        return array
+
+def allocate_array(shape, use_memory_mapping=False):
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=shape)
+        return mmap
+    else:
+        return np.zeros(shape)
+
+def get_counter_and_update():
+    global mmap_counter
+    val = mmap_counter
+    path = "medpicpy_cache/" + str(val) + ".dat"
+    mmap_counter += 1
+    return path

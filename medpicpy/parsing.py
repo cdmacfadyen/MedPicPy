@@ -9,11 +9,16 @@ from os.path import normpath
 import pandas as pd
 import numpy as np
 import cv2
+import dask.array as da
 
 from . import io
 from .utils import remove_sub_paths
 
-def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_shape):
+def load_images_from_csv(dataframe, 
+image_name_column, 
+image_dir_path, 
+output_shape,
+use_memory_mapping=False):
     """Read in an array of images from paths specified in a csv
 
     ##Example
@@ -37,7 +42,7 @@ def load_images_from_csv(dataframe, image_name_column, image_dir_path, output_sh
     image_paths = image_names.apply(lambda x : image_dir_path + "/" + x)
     image_paths = image_paths.apply(lambda x : normpath(x))
 
-    images = load_images_from_paths(image_paths, output_shape)
+    images = load_images_from_paths(image_paths, output_shape, use_memory_mapping=use_memory_mapping)
     return images
 
     
@@ -120,7 +125,8 @@ def load_classes_in_directory_name(directory,
     output_shape, 
     class_level=1,
     slices_to_take=None,
-    slice_axis=-2):
+    slice_axis=-2,
+    use_memory_mapping=False):
     """Parse datasets where the class name is in the 
     directory structure
 
@@ -167,14 +173,14 @@ def load_classes_in_directory_name(directory,
     files = remove_sub_paths(files)
     number_of_files = len(files)
     array_shape = (number_of_files,) + output_shape
-    array = np.zeros(array_shape, dtype=np.float32)
+    array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
     classes = np.empty(number_of_files, dtype=object)
 
     for index, name in enumerate(files):
         parts = Path(name).parts
         class_name = parts[class_level]
 
-        image = io.load_image(name)
+        image = io.load_image(name, use_memory_mapping=use_memory_mapping)
         result = cv2.resize(image, output_shape)
 
         classes[index] = class_name
@@ -184,7 +190,7 @@ def load_classes_in_directory_name(directory,
 
 
 
-def load_images_from_paths(paths, output_shape):
+def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     """2D image loading function that takes an array of 
     paths and an output shape and returns the images in 
     the same order as the paths. Requires every 
@@ -202,14 +208,14 @@ def load_images_from_paths(paths, output_shape):
     """
     array_length = len(paths)
     array_shape = (array_length,) + output_shape # concat tuples to get shape
-    image_array = np.zeros(array_shape)
+    image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
         image_name = paths[i]
-        image = io.load_image(image_name)
+        image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
-    
+            
     return image_array
 
 # slice axis will be -2 for most things since they 
@@ -220,7 +226,8 @@ def load_series_from_paths(
     paths,
     slice_output_shape, 
     slices_to_take,
-    slice_axis=-2
+    slice_axis=-2,
+    use_memory_mapping=False
     ):
     """Load an array of 3D scans into memory from their paths.
 
@@ -294,29 +301,34 @@ def load_series_from_paths(
         np.array: array of all scans with specified size
     """
 
-    temp_list = []
+    output_shape = (len(paths), len(slices_to_take)) + slice_output_shape
+    output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
+    
     for i in range(0, len(paths)):
         path = paths[i]
-        image = io.load_image(path)
-        new_image = np.zeros(((len(slices_to_take),) + image[0].shape))
+        image = io.load_image(path, use_memory_mapping=False)
+        new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
+
         for index, slice_index in enumerate(slices_to_take):
             new_image[index] = image[slice_index]
         
         final_shape = new_image.shape[:slice_axis] + slice_output_shape + new_image.shape[:slice_axis + 2]
-        final_image = np.zeros(final_shape)
+        final_image = io.allocate_array(final_shape, use_memory_mapping=use_memory_mapping)
 
-        for i in range(final_shape[0]):
+        for j in range(final_shape[0]):
             image = new_image[i][slice_axis]
             image = cv2.resize(image, slice_output_shape)
-            final_image[i] = image
+            final_image[j] = image
         
-        temp_list.append(final_image)
-    return np.array(temp_list)
+        output_array[i] = final_image
+    return output_array
 
 # get_all_slices_from_scans maybe
 # TODO: have it return an array containing the 
 # paths also
-def load_all_slices_from_series(paths, output_shape):
+def load_all_slices_from_series(paths, 
+    output_shape,
+    use_memory_mapping=False):
     """Reads a dataset of 2d images from a 3d series
 
     Args:
@@ -326,23 +338,29 @@ def load_all_slices_from_series(paths, output_shape):
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    all_series = [io.load_image(path) for path in paths]
+    all_series = [io.load_image(path, use_memory_mapping=use_memory_mapping) for path in paths]
+    print("finished reading all series")
     reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
     series_lengths = [len(series) for series in reshaped]
     output_array_length = sum(series_lengths)
     output_array_shape = (output_array_length,) + output_shape
-    array = np.zeros(output_array_shape)
+    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
 
+    # array = da.zeros(output_array_shape, chunks="auto")
     output_index = 0
     for series_counter in range(0, len(series_lengths)):
         for image_counter in range(0, series_lengths[series_counter]):
             array[output_index] = reshaped[series_counter][image_counter]
             output_index += 1
     
-
     return array
+    # return array.compute()
 
-def load_specific_slices_from_series(paths, output_shape, slices_to_take):
+def load_specific_slices_from_series(
+    paths,
+    output_shape,
+    slices_to_take,
+    use_memory_mapping=False):
     """Get specific slice or slices from series of scans.
     Takes path, desired shape and array of slice/slices to 
     take from each series. 
@@ -356,7 +374,7 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     Returns:
         np.array: every slice as specified by the slices_to_take
     """ 
-    all_series = [io.load_image(path) for path in paths]
+    all_series = [io.load_image(path, use_memory_mapping=use_memory_mapping) for path in paths]
     chosen = [[] for series in all_series]
 
     if len(all_series) is not len(slices_to_take):
@@ -373,7 +391,7 @@ def load_specific_slices_from_series(paths, output_shape, slices_to_take):
     output_array_length = sum(series_lengths)
     output_array_shape = (output_array_length,) + output_shape
 
-    array = np.zeros(output_array_shape)
+    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
 
     output_index = 0
     for series_counter in range(0, len(series_lengths)):
