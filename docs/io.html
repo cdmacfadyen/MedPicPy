@@ -107,6 +107,15 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
         return array
 
 def allocate_array(shape, use_memory_mapping=False):
+    &#34;&#34;&#34;Allocates space for a numpy array, and abstracts over memory mapping.
+
+    Args:
+        shape (tuple): shape of numpy array
+        use_memory_mapping (bool, optional): Store array on disk instead of in memory. Defaults to False.
+
+    Returns:
+        np.array: numpy array with given shape. 
+    &#34;&#34;&#34;
     if use_memory_mapping:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=shape)
@@ -133,12 +142,33 @@ def get_counter_and_update():
 <span>def <span class="ident">allocate_array</span></span>(<span>shape, use_memory_mapping=False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Allocates space for a numpy array, and abstracts over memory mapping.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>shape</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>shape of numpy array</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Store array on disk instead of in memory. Defaults to False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>np.array</code></dt>
+<dd>numpy array with given shape.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def allocate_array(shape, use_memory_mapping=False):
+    &#34;&#34;&#34;Allocates space for a numpy array, and abstracts over memory mapping.
+
+    Args:
+        shape (tuple): shape of numpy array
+        use_memory_mapping (bool, optional): Store array on disk instead of in memory. Defaults to False.
+
+    Returns:
+        np.array: numpy array with given shape. 
+    &#34;&#34;&#34;
     if use_memory_mapping:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=shape)
