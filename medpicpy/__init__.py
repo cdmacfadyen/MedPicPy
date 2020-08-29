@@ -10,7 +10,11 @@ import os
 import shutil
 
 from .parsing import *
-from .io import *
+
+from .io import allocate_array
+from .io import load_image
+from .io import load_series
+
 from .paths import *
 
 cache_dir = "medpicpy_cache/"
