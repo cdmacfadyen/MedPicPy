@@ -71,6 +71,8 @@ use_memory_mapping=False):
         image_name_column (index): Index of column with image names
         image_dir_path (string): Path to directory containing images
         output_shape (tuple): Output shape for each image
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.Array: Array of images in order 
@@ -201,7 +203,8 @@ def load_classes_in_directory_name(directory,
         output_shape (tuple): Desired output shape of images
         class_level (int, optional): Which level of directory structure 
             contains class name. Defaults to 1.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         list(str), np.Array : list of classes and corresponding images with correct shape
     &#34;&#34;&#34;
@@ -239,7 +242,8 @@ def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     Args:
         paths (list or array-like): paths of images to load
         output_shape (tuple): desired shape of each image
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: all images in numpy format with given shape
     &#34;&#34;&#34;
@@ -333,7 +337,8 @@ def load_series_from_paths(
         slice_output_shape (tuple): shape each slice should be resized to
         slices_to_take (list): list of indices of slices to take
         slice_axis (int, optional): axis to resize along. Defaults to -2.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: array of all scans with specified size
     &#34;&#34;&#34;
@@ -371,7 +376,8 @@ def load_all_slices_from_series(paths,
     Args:
         paths (list or array-like): List of paths to series 
         output_shape (tuple): desired output shape for each slice
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         numpy.Array: array containing the reshaped slices
     &#34;&#34;&#34;
@@ -407,6 +413,8 @@ def load_specific_slices_from_series(
         output_shape (tuple): desired shape of each slice
         slices_to_take (array of arrays): one array of slices 
             to take for each series
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.array: every slice as specified by the slices_to_take
@@ -513,6 +521,9 @@ def stack_modalities(arrays, axis=-1):
 <dd>List of paths to series </dd>
 <dt><strong><code>output_shape</code></strong> :&ensp;<code>tuple</code></dt>
 <dd>desired output shape for each slice</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -531,7 +542,8 @@ def stack_modalities(arrays, axis=-1):
     Args:
         paths (list or array-like): List of paths to series 
         output_shape (tuple): desired output shape for each slice
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         numpy.Array: array containing the reshaped slices
     &#34;&#34;&#34;
@@ -719,6 +731,9 @@ e.g for png's - *.png</dd>
 <dt><strong><code>class_level</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Which level of directory structure
 contains class name. Defaults to 1.</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>list(str), np.Array : list of classes and corresponding images with correct shape</p></div>
@@ -770,7 +785,8 @@ contains class name. Defaults to 1.</dd>
         output_shape (tuple): Desired output shape of images
         class_level (int, optional): Which level of directory structure 
             contains class name. Defaults to 1.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         list(str), np.Array : list of classes and corresponding images with correct shape
     &#34;&#34;&#34;
@@ -817,6 +833,9 @@ array = med.load_images_from_csv(description, 0, &quot;mini-MIAS/&quot;, (224, 2
 <dd>Path to directory containing images</dd>
 <dt><strong><code>output_shape</code></strong> :&ensp;<code>tuple</code></dt>
 <dd>Output shape for each image</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -847,6 +866,8 @@ use_memory_mapping=False):
         image_name_column (index): Index of column with image names
         image_dir_path (string): Path to directory containing images
         output_shape (tuple): Output shape for each image
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.Array: Array of images in order 
@@ -875,6 +896,9 @@ to the given output shape.</p>
 <dd>paths of images to load</dd>
 <dt><strong><code>output_shape</code></strong> :&ensp;<code>tuple</code></dt>
 <dd>desired shape of each image</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -897,7 +921,8 @@ to the given output shape.</p>
     Args:
         paths (list or array-like): paths of images to load
         output_shape (tuple): desired shape of each image
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: all images in numpy format with given shape
     &#34;&#34;&#34;
@@ -983,6 +1008,9 @@ print(images.shape)
 <dd>list of indices of slices to take</dd>
 <dt><strong><code>slice_axis</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>axis to resize along. Defaults to -2.</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1067,7 +1095,8 @@ print(images.shape)
         slice_output_shape (tuple): shape each slice should be resized to
         slices_to_take (list): list of indices of slices to take
         slice_axis (int, optional): axis to resize along. Defaults to -2.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: array of all scans with specified size
     &#34;&#34;&#34;
@@ -1111,6 +1140,9 @@ take from each series. </p>
 <dt><strong><code>slices_to_take</code></strong> :&ensp;<code>array</code> of <code>arrays</code></dt>
 <dd>one array of slices
 to take for each series</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
+<dd>store the data on disk instead of in memory.
+Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1135,6 +1167,8 @@ to take for each series</dd>
         output_shape (tuple): desired shape of each slice
         slices_to_take (array of arrays): one array of slices 
             to take for each series
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.array: every slice as specified by the slices_to_take
