@@ -34,6 +34,8 @@ use_memory_mapping=False):
         image_name_column (index): Index of column with image names
         image_dir_path (string): Path to directory containing images
         output_shape (tuple): Output shape for each image
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.Array: Array of images in order 
@@ -164,7 +166,8 @@ def load_classes_in_directory_name(directory,
         output_shape (tuple): Desired output shape of images
         class_level (int, optional): Which level of directory structure 
             contains class name. Defaults to 1.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         list(str), np.Array : list of classes and corresponding images with correct shape
     """
@@ -202,7 +205,8 @@ def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     Args:
         paths (list or array-like): paths of images to load
         output_shape (tuple): desired shape of each image
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: all images in numpy format with given shape
     """
@@ -296,7 +300,8 @@ def load_series_from_paths(
         slice_output_shape (tuple): shape each slice should be resized to
         slices_to_take (list): list of indices of slices to take
         slice_axis (int, optional): axis to resize along. Defaults to -2.
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         np.array: array of all scans with specified size
     """
@@ -334,7 +339,8 @@ def load_all_slices_from_series(paths,
     Args:
         paths (list or array-like): List of paths to series 
         output_shape (tuple): desired output shape for each slice
-
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
     Returns:
         numpy.Array: array containing the reshaped slices
     """
@@ -370,6 +376,8 @@ def load_specific_slices_from_series(
         output_shape (tuple): desired shape of each slice
         slices_to_take (array of arrays): one array of slices 
             to take for each series
+        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
+            Defaults to False
 
     Returns:
         np.array: every slice as specified by the slices_to_take
