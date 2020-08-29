@@ -316,7 +316,7 @@ def load_series_from_paths(
         final_image = io.allocate_array(final_shape, use_memory_mapping=use_memory_mapping)
 
         for j in range(final_shape[0]):
-            image = new_image[i][slice_axis]
+            image = new_image[j][slice_axis]
             image = cv2.resize(image, slice_output_shape)
             final_image[j] = image
         
