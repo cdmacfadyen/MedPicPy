@@ -32,8 +32,9 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <p>MedPicPy provides a simple API for loading medical
 imaging datasets for use in deep learning projects.</p>
 <p>The documentation for the functions shows example usages,
-or see <a href="https://github.com/cdmacfadyen/MedPicPy/wiki">the wiki</a>
-for examples of how the library is used on real datasets.</p>
+see <a href="https://github.com/cdmacfadyen/MedPicPy/wiki">the wiki</a>
+for examples of how the library is used on real datasets
+or check out the <a href="https://github.com/cdmacfadyen/MedPicPy">GitHub page</a> to install/contribute.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -43,14 +44,19 @@ MedPicPy provides a simple API for loading medical
 imaging datasets for use in deep learning projects.
 
 The documentation for the functions shows example usages,
-or see [the wiki](https://github.com/cdmacfadyen/MedPicPy/wiki)
-for examples of how the library is used on real datasets. 
+see [the wiki](https://github.com/cdmacfadyen/MedPicPy/wiki)
+for examples of how the library is used on real datasets 
+or check out the [GitHub page](https://github.com/cdmacfadyen/MedPicPy) to install/contribute.
 &#34;&#34;&#34;
 import os
 import shutil
 
 from .parsing import *
-from .io import *
+
+from .io import allocate_array
+from .io import load_image
+from .io import load_series
+
 from .paths import *
 
 cache_dir = &#34;medpicpy_cache/&#34;
