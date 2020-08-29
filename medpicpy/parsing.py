@@ -304,8 +304,8 @@ def load_scans_from_paths(
     
     for i in range(0, len(paths)):
         path = paths[i]
-        image = io.load_image(path, use_memory_mapping=use_memory_mapping)
-        new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=use_memory_mapping)
+        image = io.load_image(path, use_memory_mapping=False)
+        new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
 
         for index, slice_index in enumerate(slices_to_take):
             new_image[index] = image[slice_index]
@@ -313,10 +313,10 @@ def load_scans_from_paths(
         final_shape = new_image.shape[:slice_axis] + slice_output_shape + new_image.shape[:slice_axis + 2]
         final_image = io.allocate_array(final_shape, use_memory_mapping=use_memory_mapping)
 
-        for i in range(final_shape[0]):
+        for j in range(final_shape[0]):
             image = new_image[i][slice_axis]
             image = cv2.resize(image, slice_output_shape)
-            final_image[i] = image
+            final_image[j] = image
         
         output_array[i] = final_image
     return output_array
