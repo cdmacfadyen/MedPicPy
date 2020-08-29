@@ -43,8 +43,9 @@ import cv2
 import SimpleITK as sitk
 import numpy as np
 
+mmap_counter = 0
 
-def load_image(path):
+def load_image(path, use_memory_mapping=False):
     &#34;&#34;&#34;Load in any image or image series from a path
 
     Args:
@@ -53,11 +54,12 @@ def load_image(path):
     Returns:
         np.Array: image in numpy format
     &#34;&#34;&#34;
+    print(&#34;reading &#34; + path)
     image_name = ntpath.basename(path)
     image_as_array = None
 
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
-        series = load_series(path)
+        series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
     extension = image_name.split(&#34;.&#34;)[1]
@@ -72,10 +74,16 @@ def load_image(path):
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
     
-    return image_as_array
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=image_as_array.shape)
+        mmap[:] = image_as_array[:]
+        return mmap
+    else:
+        return image_as_array
 
 
-def load_series(path): # for more than 2d dicoms. 
+def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     &#34;&#34;&#34;Load an image series from a directory(e.g. dicom)
 
     Args:
@@ -89,7 +97,29 @@ def load_series(path): # for more than 2d dicoms.
     series_reader.SetFileNames(file_names)
     image = series_reader.Execute()
     array = sitk.GetArrayFromImage(image)
-    return array</code></pre>
+
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=array.shape)
+        mmap[:] = array[:]
+        return mmap
+    else:
+        return array
+
+def allocate_array(shape, use_memory_mapping=False):
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=shape)
+        return mmap
+    else:
+        return np.zeros(shape)
+
+def get_counter_and_update():
+    global mmap_counter
+    val = mmap_counter
+    path = &#34;medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
+    mmap_counter += 1
+    return path</code></pre>
 </details>
 </section>
 <section>
@@ -99,8 +129,43 @@ def load_series(path): # for more than 2d dicoms.
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="medpicpy.io.allocate_array"><code class="name flex">
+<span>def <span class="ident">allocate_array</span></span>(<span>shape, use_memory_mapping=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def allocate_array(shape, use_memory_mapping=False):
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=shape)
+        return mmap
+    else:
+        return np.zeros(shape)</code></pre>
+</details>
+</dd>
+<dt id="medpicpy.io.get_counter_and_update"><code class="name flex">
+<span>def <span class="ident">get_counter_and_update</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_counter_and_update():
+    global mmap_counter
+    val = mmap_counter
+    path = &#34;medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
+    mmap_counter += 1
+    return path</code></pre>
+</details>
+</dd>
 <dt id="medpicpy.io.load_image"><code class="name flex">
-<span>def <span class="ident">load_image</span></span>(<span>path)</span>
+<span>def <span class="ident">load_image</span></span>(<span>path, use_memory_mapping=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Load in any image or image series from a path</p>
@@ -118,7 +183,7 @@ def load_series(path): # for more than 2d dicoms.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_image(path):
+<pre><code class="python">def load_image(path, use_memory_mapping=False):
     &#34;&#34;&#34;Load in any image or image series from a path
 
     Args:
@@ -127,11 +192,12 @@ def load_series(path): # for more than 2d dicoms.
     Returns:
         np.Array: image in numpy format
     &#34;&#34;&#34;
+    print(&#34;reading &#34; + path)
     image_name = ntpath.basename(path)
     image_as_array = None
 
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
-        series = load_series(path)
+        series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
     extension = image_name.split(&#34;.&#34;)[1]
@@ -146,11 +212,17 @@ def load_series(path): # for more than 2d dicoms.
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
     
-    return image_as_array</code></pre>
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=image_as_array.shape)
+        mmap[:] = image_as_array[:]
+        return mmap
+    else:
+        return image_as_array</code></pre>
 </details>
 </dd>
 <dt id="medpicpy.io.load_series"><code class="name flex">
-<span>def <span class="ident">load_series</span></span>(<span>path)</span>
+<span>def <span class="ident">load_series</span></span>(<span>path, use_memory_mapping=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Load an image series from a directory(e.g. dicom)</p>
@@ -168,7 +240,7 @@ def load_series(path): # for more than 2d dicoms.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_series(path): # for more than 2d dicoms. 
+<pre><code class="python">def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     &#34;&#34;&#34;Load an image series from a directory(e.g. dicom)
 
     Args:
@@ -182,7 +254,14 @@ def load_series(path): # for more than 2d dicoms.
     series_reader.SetFileNames(file_names)
     image = series_reader.Execute()
     array = sitk.GetArrayFromImage(image)
-    return array</code></pre>
+
+    if use_memory_mapping:
+        mmap_name = get_counter_and_update()
+        mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=array.shape)
+        mmap[:] = array[:]
+        return mmap
+    else:
+        return array</code></pre>
 </details>
 </dd>
 </dl>
@@ -207,6 +286,8 @@ data-gaCategoryParameter="medpicpy.io">
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="medpicpy.io.allocate_array" href="#medpicpy.io.allocate_array">allocate_array</a></code></li>
+<li><code><a title="medpicpy.io.get_counter_and_update" href="#medpicpy.io.get_counter_and_update">get_counter_and_update</a></code></li>
 <li><code><a title="medpicpy.io.load_image" href="#medpicpy.io.load_image">load_image</a></code></li>
 <li><code><a title="medpicpy.io.load_series" href="#medpicpy.io.load_series">load_series</a></code></li>
 </ul>
