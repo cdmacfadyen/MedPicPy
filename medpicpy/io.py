@@ -19,7 +19,6 @@ def load_image(path, use_memory_mapping=False):
     Returns:
         np.Array: image in numpy format
     """
-    print("reading " + path)
     image_name = ntpath.basename(path)
     image_as_array = None
 
