@@ -310,6 +310,7 @@ def load_series_from_paths(
     output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
     
     for i in range(0, len(paths)):
+        # print("Loading image {} / {}".format(i, len(paths)), end="\t\t\t\r", flush=True)
         path = paths[i]
         image = io.load_image(path, use_memory_mapping=False)
         new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
