@@ -9,7 +9,6 @@ from os.path import normpath
 import pandas as pd
 import numpy as np
 import cv2
-import dask.array as da
 
 from . import io
 from .utils import remove_sub_paths
