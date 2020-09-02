@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name = 'medpicpy',         
     packages = ['medpicpy'],   
-    version = '1.0.0',      
+    version = '1.0.1',      
     license='MIT',       
     description = 'A package to simplify loading medical imaging datasets.',
     long_description=long_description,
@@ -14,7 +14,6 @@ setup(
     author = 'Craig Macfadyen',                  
     author_email = 'cdmacfadyen@gmail.com',      
     url = 'https://github.com/cdmacfadyen/medpicpy',   
-    download_url = 'https://github.com/cdmacfadyen/MedPicPy/archive/1.0.0.tar.gz',   
     keywords = ['medical-imaging', 'python', 'computer-vision', 'machine-learning'],  
     install_requires=[            
         'cycler',
