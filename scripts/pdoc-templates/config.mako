@@ -37,7 +37,7 @@
     # If set, insert Google Custom Search search bar widget above the sidebar index.
     # The whitespace-separated tokens represent arbitrary extra queries (at least one
     # must match) passed to regular Google search. Example:
-    search_query = 'inurl:github.com/cdmacfadyen/MedPicPy  site:cdmacfadyen.github.io/MedPicPy  site:cdmacfadyen.github.io/ site:MedPicPy.website'
+    google_search_query = 'inurl:github.com/cdmacfadyen/MedPicPy  site:cdmacfadyen.github.io/MedPicPy'
     # search_query = ''
     # If set, render LaTeX math syntax within \(...\) (inline equations),
     # or within \[...\] or $$...$$ or `.. math::` (block equations)
