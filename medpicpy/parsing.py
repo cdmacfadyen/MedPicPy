@@ -214,7 +214,7 @@ def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
-        print("Loading images {} / {}".format(i + 1, len(paths)), end="\t\t\t\r", flush=True)
+        print("Loading images {} / {}".format(i + 1, len(paths)), end="\r", flush=True)
         image_name = paths[i]
         image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
@@ -310,7 +310,7 @@ def load_series_from_paths(
     output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
     
     for i in range(0, len(paths)):
-        print("Loading images {} / {}".format(i + 1, len(paths)), end="\t\t\t\r", flush=True)
+        print("Loading images {} / {}".format(i + 1, len(paths)), end="\r", flush=True)
         path = paths[i]
         image = io.load_image(path, use_memory_mapping=False)
         new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
