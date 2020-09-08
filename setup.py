@@ -2,6 +2,7 @@ from distutils.core import setup
 """
 New release checklist:
     - update version
+    - pull and push
     - run python3 setup.py sdist bdist_wheel
     - python3 -m twine upload dist/*
 """
