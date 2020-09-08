@@ -1,5 +1,10 @@
 from distutils.core import setup
-
+"""
+New release checklist:
+    - update version
+    - run python3 setup.py sdist bdist_wheel
+    - python3 -m twine upload dist/*
+"""
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
