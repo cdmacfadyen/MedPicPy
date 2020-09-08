@@ -309,7 +309,7 @@ def load_series_from_paths(
     output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
     
     for i in range(0, len(paths)):
-        # print("Loading image {} / {}".format(i, len(paths)), end="\t\t\t\r", flush=True)
+        print("Loading images {} / {}".format(i + 1, len(paths)), end="\t\t\t\r", flush=True)
         path = paths[i]
         image = io.load_image(path, use_memory_mapping=False)
         new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
@@ -326,6 +326,7 @@ def load_series_from_paths(
             final_image[j] = image
         
         output_array[i] = final_image
+    print("")
     return output_array
 
 # get_all_slices_from_scans maybe
