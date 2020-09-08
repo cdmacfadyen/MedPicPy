@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 setup(
     name = 'medpicpy',         
     packages = ['medpicpy'],   
-    version = '1.0.1',      
+    version = '1.0.2',      
     license='MIT',       
     description = 'A package to simplify loading medical imaging datasets.',
     long_description=long_description,
