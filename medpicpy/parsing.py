@@ -214,11 +214,12 @@ def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
+        print("Loading images {} / {}".format(i + 1, len(paths)), end="\t\t\t\r", flush=True)
         image_name = paths[i]
         image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
-            
+    print("")
     return image_array
 
 # slice axis will be -2 for most things since they 
