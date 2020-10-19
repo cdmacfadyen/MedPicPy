@@ -1,3 +1,5 @@
+import setuptools
+
 from distutils.core import setup
 """
 New release checklist:
@@ -12,7 +14,7 @@ with open("README.md", "r") as fh:
 setup(
     name = 'medpicpy',         
     packages = ['medpicpy'],   
-    version = '1.0.2',      
+    version = '1.0.3',      
     license='MIT',       
     description = 'A package to simplify loading medical imaging datasets.',
     long_description=long_description,
@@ -34,7 +36,6 @@ setup(
         'pandas',
         'pdoc3',
         'Pillow',
-        'pkg-resources',
         'pyparsing',
         'python-dateutil',
         'pytz',
