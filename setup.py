@@ -6,7 +6,7 @@ New release checklist:
     - update version
     - pull and push
     - run python3 setup.py sdist bdist_wheel
-    - python3 -m twine upload dist/*
+    - python3 -m twine upload dist/* --skip-existing
 """
 with open("README.md", "r") as fh:
     long_description = fh.read()
