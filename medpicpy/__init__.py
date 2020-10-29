@@ -19,9 +19,12 @@ from .io import load_series
 from .paths import *
 
 cache_dir = "medpicpy_cache/"
-
 if not os.path.exists(cache_dir):
     os.mkdir(cache_dir)
 else:
+    for cache_file in os.listdir(cache_dir):
+        os.remove(cache_dir + cache_file)
+
+def clear_cache():
     for cache_file in os.listdir(cache_dir):
         os.remove(cache_dir + cache_file)

@@ -346,23 +346,75 @@ def load_all_slices_from_series(paths,
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    all_series = [io.load_image(path, use_memory_mapping=use_memory_mapping) for path in paths]
-    print("finished reading all series")
-    reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
-    series_lengths = [len(series) for series in reshaped]
-    output_array_length = sum(series_lengths)
-    output_array_shape = (output_array_length,) + output_shape
-    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+    all_series = []
+    for index, path in enumerate(paths):
+        print("Loading images {} / {}".format(index + 1, len(paths)), end="\r")
+        image = io.load_image(path,
+            use_memory_mapping=use_memory_mapping,
+            scale_dicom=True)
+        all_series.append(image)
 
-    # array = da.zeros(output_array_shape, chunks="auto")
-    output_index = 0
-    for series_counter in range(0, len(series_lengths)):
-        for image_counter in range(0, series_lengths[series_counter]):
-            array[output_index] = reshaped[series_counter][image_counter]
-            output_index += 1
+    # all_series = [io.load_image(path, 
+    #     use_memory_mapping=use_memory_mapping,
+    #     scale_dicom=True) for path in paths]
+    print("finished reading all series")
+    none_count = 0
+    for series in all_series:
+        if series is None:
+            none_count += 1
+    print(f"{none_count} out of {len(all_series)} could not be read.")
+    reshaped = []
+    final_paths = []
+    series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
+    all_series = [series for series in all_series if series is not None]
+    print("shape: ", len(all_series), all_series[0].shape)
+    for index, series in enumerate(all_series):
+        path = series_and_paths[index][1]   # get the path for the image
+        series = series.astype("float32")   # resize doesn't work on ints
+        if len(series.shape) == 2:  # then it is already 2D
+            reshaped.append(cv2.resize(series, output_shape))
+            final_paths.append(path)
+            continue
+        elif len(series.shape) == 3: # if its 3d
+            print(f"It's 3D! {series.shape}")
+            print(path)
+            # import matplotlib.pyplot as plt
+            # fig, ax = plt.subplots()
+            # ax.imshow(series[0], cmap="gray")
+            # plt.savefig(f"./images/error.png")
+            # exit(0)
+            if series.shape[0] == 1:        # if its actually 2d
+                reshaped.append(cv2.resize(series[0], output_shape))
+                final_paths.append(path)
+                continue
+            for image in series:
+                reshaped.append(cv2.resize(image, output_shape))
+                final_paths.append(path)
+        else:
+            print(f"Its not 2 or 3D!:{series.shape}")
+            exit(0)
+    print(len(reshaped), reshaped[0].shape)
     
-    return array
-    # return array.compute()
+    # reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
+    # series_lengths = [len(series) for series in reshaped]
+    output_array_length = len(reshaped)
+    # print("series_lengths: ", series_lengths)
+    print(f"output_array_length: {output_array_length}")
+    output_array_shape = (output_array_length,) + output_shape
+    print(f"output_array_shape: {output_array_shape}")
+    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+    for i in range(0, len(array)):
+        array[i] = reshaped[i]
+    return final_paths, array
+
+    # # array = da.zeros(output_array_shape, chunks="auto")
+    # output_index = 0
+    # for series_counter in range(0, len(series_lengths)):
+    #     for image_counter in range(0, series_lengths[series_counter]):
+    #         array[output_index] = reshaped[series_counter][image_counter]
+    #         output_index += 1
+    
+    # # return array.compute()
 
 def load_specific_slices_from_series(
     paths,
