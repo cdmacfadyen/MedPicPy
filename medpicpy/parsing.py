@@ -346,17 +346,23 @@ def load_all_slices_from_series(paths,
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    all_series = []
+    # all_series = []
+    all_series = np.array()
     for index, path in enumerate(paths):
         print("Loading images {} / {}".format(index + 1, len(paths)), end="\r")
         image = io.load_image(path,
             use_memory_mapping=use_memory_mapping,
             scale_dicom=True)
-        all_series.append(image)
-
+        # all_series.append(image) # Added .copy() because otherwise python seems to hold the file open.
+        np.concatenate((all_series, image))
     # all_series = [io.load_image(path, 
     #     use_memory_mapping=use_memory_mapping,
     #     scale_dicom=True) for path in paths]
+    # SO instead of this, I need to open it, reshape it, close it
+    # even taht wornt work
+    # I need to read them all twice then
+    # once to get all of the sizes for the finished array and 
+    # once to actually load the images in. 
     print("finished reading all series")
     none_count = 0
     for series in all_series:
