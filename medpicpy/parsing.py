@@ -333,7 +333,58 @@ def load_series_from_paths(
 # get_all_slices_from_scans maybe
 # TODO: have it return an array containing the 
 # paths also
-def load_all_slices_from_series(paths, 
+def get_length_of_all_series(paths, skip_rgb = True):
+    all_series = []
+    for index, path in enumerate(paths):
+        if index % 100 == 0:
+            print(f"Getting length of images ~ {index} of {len(paths)}", end="\r")
+        image = io.load_image(path)
+        shape = None if image is None else image.shape
+        # if len(shape) == 3:
+        #     print("3d image")
+        all_series.append(shape)
+
+    print("finished reading all series")
+    none_count = 0
+    for series in all_series:
+        if series is None:
+            none_count += 1
+    print(f"{none_count} out of {len(all_series)} could not be read.")
+    final_paths = []
+    series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
+    all_series = [series for series in all_series if series is not None]
+    number_of_series = 0
+    print("shape: ", len(all_series), all_series[0])
+    for index, series in enumerate(all_series):
+        path = series_and_paths[index][1]   # get the path for the image
+        if len(series) == 2:  # then it is already 2D
+            number_of_series += 1
+            final_paths.append(path)
+            continue
+        elif len(series) == 3: # if its 3d
+            print(f"It's 3D! {series}")
+            print(path)
+            # import matplotlib.pyplot as plt
+            # fig, ax = plt.subplots()
+            # ax.imshow(series[0], cmap="gray")
+            # plt.savefig(f"./images/error.png")
+            # exit(0)
+            if series[0] == 1:        # if its actually 2d
+                number_of_series += 1
+                final_paths.append(path)
+            elif series[2] == 3:
+                continue
+            else:
+                for image in series:
+                    number_of_series += 1
+                    final_paths.append(path)
+        else:
+            print(f"Its not 2 or 3D!:{series}")
+            exit(0)
+    return number_of_series, final_paths
+            
+def load_all_slices_from_series(paths,
+    all_series_length,
     output_shape,
     use_memory_mapping=False):
     """Reads a dataset of 2d images from a 3d series
@@ -346,73 +397,47 @@ def load_all_slices_from_series(paths,
     Returns:
         numpy.Array: array containing the reshaped slices
     """
-    # all_series = []
-    all_series = np.array()
-    for index, path in enumerate(paths):
-        print("Loading images {} / {}".format(index + 1, len(paths)), end="\r")
-        image = io.load_image(path,
-            use_memory_mapping=use_memory_mapping,
-            scale_dicom=True)
-        # all_series.append(image) # Added .copy() because otherwise python seems to hold the file open.
-        np.concatenate((all_series, image))
-    # all_series = [io.load_image(path, 
-    #     use_memory_mapping=use_memory_mapping,
-    #     scale_dicom=True) for path in paths]
-    # SO instead of this, I need to open it, reshape it, close it
-    # even taht wornt work
-    # I need to read them all twice then
-    # once to get all of the sizes for the finished array and 
-    # once to actually load the images in. 
-    print("finished reading all series")
-    none_count = 0
-    for series in all_series:
-        if series is None:
-            none_count += 1
-    print(f"{none_count} out of {len(all_series)} could not be read.")
-    reshaped = []
-    final_paths = []
-    series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
-    all_series = [series for series in all_series if series is not None]
-    print("shape: ", len(all_series), all_series[0].shape)
-    for index, series in enumerate(all_series):
-        path = series_and_paths[index][1]   # get the path for the image
-        series = series.astype("float32")   # resize doesn't work on ints
-        if len(series.shape) == 2:  # then it is already 2D
-            reshaped.append(cv2.resize(series, output_shape))
-            final_paths.append(path)
-            continue
-        elif len(series.shape) == 3: # if its 3d
-            print(f"It's 3D! {series.shape}")
-            print(path)
-            # import matplotlib.pyplot as plt
-            # fig, ax = plt.subplots()
-            # ax.imshow(series[0], cmap="gray")
-            # plt.savefig(f"./images/error.png")
-            # exit(0)
-            if series.shape[0] == 1:        # if its actually 2d
-                reshaped.append(cv2.resize(series[0], output_shape))
-                final_paths.append(path)
-                continue
-            for image in series:
-                reshaped.append(cv2.resize(image, output_shape))
-                final_paths.append(path)
-        else:
-            print(f"Its not 2 or 3D!:{series.shape}")
-            exit(0)
-    print(len(reshaped), reshaped[0].shape)
     
-    # reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
-    # series_lengths = [len(series) for series in reshaped]
-    output_array_length = len(reshaped)
-    # print("series_lengths: ", series_lengths)
-    print(f"output_array_length: {output_array_length}")
-    output_array_shape = (output_array_length,) + output_shape
+    print(f"output_array_length: {all_series_length}")
+    output_array_shape = (all_series_length,) + output_shape
     print(f"output_array_shape: {output_array_shape}")
+    print("Len paths ", len(paths))
     array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
-    for i in range(0, len(array)):
-        array[i] = reshaped[i]
-    return final_paths, array
+    # output_array_length: 2970405
+    images_written = 0
+    for image_index, path in enumerate(paths):
+        if images_written == all_series_length:
+            print("Breaking early")
+            break
+        print(f"Image #{image_index}, Images written {images_written}")
+        if image_index % 100 == 0:
+            print(f"Re-loading image: {image_index} of {len(paths)}", end="\r")
+        image = io.load_image(path, scale_dicom=True,use_memory_mapping=use_memory_mapping)
+        if image is None:
+            continue
+        image_shape = image.shape
+        if len(image_shape) == 2:
+            resized_image = cv2.resize(image, output_shape)
+            array[images_written] = resized_image[:]
+            images_written += 1
+        elif len(image_shape) == 3:
 
+            if image_shape[0] == 1: #its actually 2d
+                resized_image = cv2.resize(image, output_shape)
+                array[images_written] = resized_image[:]
+                images_written += 1
+            elif image_shape[2] == 3:
+                continue    #skip rgb
+            else:
+                for slice_index in range(len(image)):
+                    resized_image = cv2.resize(image[slice_index], output_shape)
+                    array[images_written] = resized_image[:]
+                    images_written += 1
+                    
+    return array
+    #MR/CPTAC-GBM
+    #/data2/cdcm/train/MR/Anti-PD-1_MELANOMA/7-138.dcm
+    #/data2/cdcm/train/CT/ACRIN-FLT-Breast/27-215.dcm
     # # array = da.zeros(output_array_shape, chunks="auto")
     # output_index = 0
     # for series_counter in range(0, len(series_lengths)):
