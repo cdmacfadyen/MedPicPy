@@ -354,7 +354,7 @@ def load_all_slices_from_series(paths,
             use_memory_mapping=use_memory_mapping,
             scale_dicom=True)
         # all_series.append(image) # Added .copy() because otherwise python seems to hold the file open.
-        np.concatenate((all_series, image))
+        all_series = np.concatenate((all_series, image))
     # all_series = [io.load_image(path, 
     #     use_memory_mapping=use_memory_mapping,
     #     scale_dicom=True) for path in paths]
@@ -369,7 +369,8 @@ def load_all_slices_from_series(paths,
         if series is None:
             none_count += 1
     print(f"{none_count} out of {len(all_series)} could not be read.")
-    reshaped = []
+    # reshaped = []
+    reshaped = np.array()
     final_paths = []
     series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
     all_series = [series for series in all_series if series is not None]
@@ -378,7 +379,8 @@ def load_all_slices_from_series(paths,
         path = series_and_paths[index][1]   # get the path for the image
         series = series.astype("float32")   # resize doesn't work on ints
         if len(series.shape) == 2:  # then it is already 2D
-            reshaped.append(cv2.resize(series, output_shape))
+            # reshaped.append(cv2.resize(series, output_shape))
+            reshaped = np.concatenate((reshaped, cv2.resize(series, output_shape)))
             final_paths.append(path)
             continue
         elif len(series.shape) == 3: # if its 3d
