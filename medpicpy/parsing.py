@@ -9,9 +9,12 @@ from os.path import normpath
 import pandas as pd
 import numpy as np
 import cv2
+import logging
 
 from . import io
 from .utils import remove_sub_paths
+
+logging.getLogger(__name__)
 
 def load_images_from_csv(dataframe, 
 image_name_column, 
@@ -338,6 +341,8 @@ def get_length_of_all_series(paths, skip_rgb = True):
     for index, path in enumerate(paths):
         if index % 100 == 0:
             print(f"Getting length of images ~ {index} of {len(paths)}", end="\r")
+            logging.debug(f"Getting length of images ~ {index} of {len(paths)}")
+
         image = io.load_image(path)
         shape = None if image is None else image.shape
         # if len(shape) == 3:
@@ -412,6 +417,8 @@ def load_all_slices_from_series(paths,
         print(f"Image #{image_index}, Images written {images_written}")
         if image_index % 100 == 0:
             print(f"Re-loading image: {image_index} of {len(paths)}", end="\r")
+            logging.debug(f"Getting length of images ~ {index} of {len(paths)}")
+        
         image = io.load_image(path, scale_dicom=True,use_memory_mapping=use_memory_mapping)
         if image is None:
             continue
