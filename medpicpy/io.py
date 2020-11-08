@@ -8,6 +8,8 @@ import cv2
 import SimpleITK as sitk
 import numpy as np
 
+from . import config
+
 mmap_counter = 0
 
 def load_image(path, use_memory_mapping=False, scale_dicom=False):
@@ -21,7 +23,6 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
     """
     image_name = ntpath.basename(path)
     image_as_array = None
-
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
         series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
@@ -194,6 +195,6 @@ def allocate_array(shape, use_memory_mapping=False):
 def get_counter_and_update():
     global mmap_counter
     val = mmap_counter
-    path = "medpicpy_cache/" + str(val) + ".dat"
+    path = config.cache_location + "/medpicpy_cache/" + str(val) + ".dat"
     mmap_counter += 1
     return path

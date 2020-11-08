@@ -18,7 +18,10 @@ from .io import load_series
 
 from .paths import *
 
-cache_dir = "medpicpy_cache/"
+from . import config
+
+cache_dir = config.cache_location + "/medpicpy_cache/"
+
 if not os.path.exists(cache_dir):
     os.mkdir(cache_dir)
 else:

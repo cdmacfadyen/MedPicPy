@@ -414,10 +414,9 @@ def load_all_slices_from_series(paths,
         if images_written == all_series_length:
             print("Breaking early")
             break
-        print(f"Image #{image_index}, Images written {images_written}")
         if image_index % 100 == 0:
             print(f"Re-loading image: {image_index} of {len(paths)}", end="\r")
-            logging.debug(f"Getting length of images ~ {index} of {len(paths)}")
+            logging.debug(f"Getting length of images ~ {image_index} of {len(paths)}")
         
         image = io.load_image(path, scale_dicom=True,use_memory_mapping=use_memory_mapping)
         if image is None:
