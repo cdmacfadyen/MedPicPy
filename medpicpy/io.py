@@ -9,7 +9,9 @@ import SimpleITK as sitk
 import numpy as np
 
 from . import config
+import logging
 
+logging.getLogger(__name__)
 mmap_counter = 0
 
 def load_image(path, use_memory_mapping=False, scale_dicom=False):
@@ -27,7 +29,7 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
         series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
-    extension = image_name.split(".")[1]
+    extension = image_name.split(".")[-1]   # i want it to be the last thing
     if extension == "dcm":    # for loading an individual (2d) dicom
         try:
             image = sitk.ReadImage(path)
@@ -104,13 +106,18 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
         image_as_array = rescale_opencv_image(image_as_array)
     else:
         image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-        if image_as_array is None:  # opencv couldn't read it
-            image = sitk.ReadImage(path)
-            image_as_array = sitk.GetArrayFromImage(image)
-            print("OpenCV Couldn't read it")
-            exit(0)
+        if image_as_array is None:  # opencv couldn't read it, maybe sitk can
+            try:
+                image = sitk.ReadImage(path)    
+                image_as_array = sitk.GetArrayFromImage(image)  # SITK also can't read it
+            except RuntimeError:
+                logging.debug(f"Suppressing sitk not being able to read file: {path}")  
+                if config.suppress_errors:
+                    return None
+                else:
+                    raise
         image_as_array = rescale_opencv_image(image_as_array)
-
+    
     if use_memory_mapping and image_as_array is not None:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)

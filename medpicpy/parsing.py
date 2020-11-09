@@ -13,6 +13,7 @@ import logging
 
 from . import io
 from .utils import remove_sub_paths
+from . import config
 
 logging.getLogger(__name__)
 
@@ -378,6 +379,9 @@ def get_length_of_all_series(paths, skip_rgb = True):
                 number_of_series += 1
                 final_paths.append(path)
             elif series[2] == 3:
+                if not config.suppress_errors:
+                    print("MedPicPy does not currently work with multichannel images")
+                    exit(0)                    
                 continue
             else:
                 for image in series:

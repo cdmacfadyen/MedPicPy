@@ -1,6 +1,7 @@
 import os
 
 cache_location = "./medpicpy_cache/"
+suppress_errors = False
 
 def set_cache_location(path):
     global cache_location
