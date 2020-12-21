@@ -105,6 +105,16 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
         return image_as_array
 
 def np_dtype_max_and_min(dtype):
+    """Takes a numpy dytpe and 
+    returns the maximum and minimum possible values 
+    for that dtype. 
+
+    Args:
+        dtype (numpy dtype): dtype to find max and min values
+
+    Returns:
+        (number, number): max and min value for given dtype, can be float or int
+    """
     if np.issubdtype(dtype, np.integer):
         #int things
         int_info = np.iinfo(dtype)
@@ -117,8 +127,21 @@ def np_dtype_max_and_min(dtype):
         max_val = float_info.max
         min_val = float_info.min
         return max_val, min_val
+    else:
+        #TODO: raise exception
+        pass
     
 def rescale_opencv_image(image_as_numpy):
+    """Rescale an image that has been loaded 
+    using opencv. This loads the images directly into 
+    numpy format. 
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled image
+    """
     if config.rescale_options["method"] == "per_image":
         max_value = np.max(image_as_numpy)
         min_value = np.min(image_as_numpy)
@@ -138,6 +161,15 @@ def rescale_opencv_image(image_as_numpy):
         return rescale_image(image_as_numpy, max_value, min_value)
 
 def rescale_opencv_image_3d(image_as_numpy):
+    """Rescale an image with more than 
+    2-dimensions.
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled 3d image
+    """
     rescaled_arr = np.zeros(image_as_numpy.shape, dtype=np.float32)
     for i in range(len(image_as_numpy)):        
         rescaled_arr[i] = rescale_opencv_image(image_as_numpy[i])
@@ -146,9 +178,21 @@ def rescale_opencv_image_3d(image_as_numpy):
 def rescale_image(image,
     upper_bound,
     lower_bound):
-        top = (image - lower_bound) * (config.rescale_options["max"] - config.rescale_options["min"])
-        final = (top / (upper_bound - lower_bound)) + config.rescale_options["min"]
-        return final + config.rescale_options["min"]
+    """General feature scaling function. Takes an 
+    image to rescale and the upper and lower possible 
+    value for that image data. 
+
+    Args:
+        image (np array): array containing image data
+        upper_bound (int): max possible pixel value in image
+        lower_bound (int): min possible pixel value in image
+
+    Returns:
+        np.array: rescaled image
+    """
+    top = (image - lower_bound) * (config.rescale_options["max"] - config.rescale_options["min"])
+    final = (top / (upper_bound - lower_bound)) + config.rescale_options["min"]
+    return final + config.rescale_options["min"]
 
 
 def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
