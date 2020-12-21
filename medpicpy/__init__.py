@@ -26,7 +26,8 @@ if not os.path.exists(cache_dir):
     os.mkdir(cache_dir)
 else:
     for cache_file in os.listdir(cache_dir):
-        os.remove(cache_dir + cache_file)
+        if os.path.isfile(cache_file):
+            os.remove(cache_dir + cache_file)
 
 def clear_cache():
     for cache_file in os.listdir(cache_dir):
