@@ -1,7 +1,14 @@
 import os
 
-cache_location = "./medpicpy_cache/"
+cache_location = "."
 suppress_errors = False
+
+rescale = False
+rescale_options = {
+    "method" : "per_image",
+    "min" : 0,
+    "max" : 1
+}
 
 def set_cache_location(path):
     global cache_location
