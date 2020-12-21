@@ -35,75 +35,53 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
             image_as_array = image_as_array[0]  # only the first one since this is a 2d dico
-            # print(f"Image Type: {image.GetPixelIDTypeAsString()}")
-            # print("Bits Allocated", image.GetMetaData("0028|0100"))
-            # print("Bits Stored", image.GetMetaData("0028|0101"))
-            # print("High Bit", image.GetMetaData("0028|0102"))
-            # print("Pixel Representation", image.GetMetaData("0028|0103"))
-            # print("Photometric Interpretation: ", image.GetMetaData("0028|0004"))
-            # So max value for unsigned int is 2^Bits Stored - 1
-            # Max Value for signed int 
-            # print(f"Min value: {np.min(image_as_array)}")
-            # print(f"Max value: {np.max(image_as_array)}")
-            if scale_dicom:
-                if int(image.GetMetaData("0028|0103")) == 0:
-                    max_value = 2 ** int(image.GetMetaData("0028|0101")) - 1 # http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.6.3.html
-                    min_value = 0
-                    image_as_array[image_as_array < min_value] = min_value
-                    image_as_array[image_as_array > max_value] = max_value
-                    image_as_array = (image_as_array) / max_value
-                    if np.min(image_as_array) < 0 or np.max(image_as_array) > 1:
-                        import matplotlib.pyplot as plt
-                        print("Quitting because final number outwith range")
-                        fig, ax = plt.subplots()
-                        ax.imshow(image_as_array, cmap = "gray")
-                        plt.savefig("./images/error.png")
-                        exit(0)
-                elif int(image.GetMetaData("0028|0103")) == 1:  # 2's complement
-                    bits_stored = int(image.GetMetaData("0028|0101"))
-                    min_value = (2 ** (bits_stored - 1))
-                    max_value = (2 ** (bits_stored - 1)) - 1
-                    image_as_array[image_as_array < -min_value] = -min_value
-                    image_as_array[image_as_array > max_value] = max_value
-                    # print(f"Min: -{min_value}, Max: {max_value}")
-                    # print(f"Max - Min: {max_value + min_value}")
-                    # print(np.max(image_as_array) + min_value)
-                    # print(np.min(image_as_array) + min_value)
-                    top = image_as_array + min_value
-                    # print(f"TOP: {np.min(top)} --- {np.max(top)}")
-                    final = top / (max_value + min_value)
-                    # print(f"FINAL: {np.min(final)} --- {np.max(final)}")
-                    if np.min(final) < 0 or np.max(final) > 1:
-                        print("Quitting because final number outwith range")
-                        import matplotlib.pyplot as plt
-                        fig, ax = plt.subplots()
-                        ax.imshow(final, cmap = "gray")
-                        plt.savefig("./images/error.png")
-                        exit(0)
-                    image_as_array = final
-
-
-
+            if config.rescale:
+                if config.rescale_options["method"] == "per_image":
+                    max_value = np.max(image_as_array)
+                    min_value = np.min(image_as_array)
+                    image_as_array = rescale_image(image_as_array, max_value, min_value)
+                elif config.rescale_options["method"] == "from_dtype":
+                    if int(image.GetMetaData("0028|0103")) == 0:
+                        max_value = 2 ** int(image.GetMetaData("0028|0101")) - 1 # http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.6.3.html
+                        min_value = 0
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
+                    elif int(image.GetMetaData("0028|0103")) == 1:  # 2's complement
+                        bits_stored = int(image.GetMetaData("0028|0101"))
+                        min_value = (2 ** (bits_stored - 1))
+                        max_value = (2 ** (bits_stored - 1)) - 1
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
                 else:
                     print("Pixel Representation not 0 or 1!")
                     exit(0)
 
         except RuntimeError:
-            print(f"Error reading Dicom! {path} must be non-image.")
-            # exit(0)
-            # print(os.path.isfile(path))
-            # try:
-            #     dicom = pydicom.dcmread(path)
-            #     if dicom.pixel_array:
-            #         print("Image present that sitk didn't read!")
-            #         print(f"Image Shape: {dicom.pixel_array}" )
-            #         exit(0)
-            # except AttributeError:
-            #     pass 
+            if config.suppress_errors:
+                print(f"Error reading Dicom! {path} must be non-image.")
+            else:
+                raise
 
     elif extension == "npy" or extension == "npz":
         image_as_array = np.load(path)
         image_as_array = rescale_opencv_image(image_as_array)
+    elif extension == "gz" or extension == "nii":
+        image = sitk.ReadImage(path)    
+        image_as_array = sitk.GetArrayFromImage(image)
+        # print(image.GetMetaData("datatype")) # important one. https://brainder.org/2012/09/23/the-nifti-file-format/
+        if config.rescale and config.rescale_options["method"] == "from_dtype":
+            datatype = int(image.GetMetaData("datatype"))
+            if datatype == 2:
+                image_as_array = image_as_array.astype(np.uint8)
+            elif datatype == 4:
+                image_as_array = image_as_array.astype(np.int16)
+            elif datatype == 16:
+                image_as_array = image_as_array.astype(np.int32)
+            elif datatype == 512:
+                image_as_array = image_as_array.astype(np.uint16)
+            else:
+                print(f"MedPicPy currently doesn't support datatype {datatype} of nii.gz")
+                exit(0)
+        if config.rescale and config.rescale_options["method"] == "per_image":
+            image_as_array = rescale_opencv_image(image_as_array)
     else:
         image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         if image_as_array is None:  # opencv couldn't read it, maybe sitk can
@@ -117,7 +95,7 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
                 else:
                     raise
         image_as_array = rescale_opencv_image(image_as_array)
-    
+
     if use_memory_mapping and image_as_array is not None:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode="w+", shape=image_as_array.shape)
@@ -135,29 +113,43 @@ def np_dtype_max_and_min(dtype):
         return max_val, min_val
     elif np.issubdtype(dtype, np.floating):
         #float things
-        print("Wasn't expecting dtype to be float!")
-        exit(0)
+        float_info = np.finfo(dtype)
+        max_val = float_info.max
+        min_val = float_info.min
+        return max_val, min_val
     
 def rescale_opencv_image(image_as_numpy):
-    depth = image_as_numpy.dtype
-    # print(f"Depth {depth}")
-    max_value, min_value = np_dtype_max_and_min(depth)
-    # print(f"Max value {max_value}, min value {min_value}")
-    
-    numerator = image_as_numpy - min_value
-    denominator = max_value - min_value
-    rescaled = numerator / denominator
+    if config.rescale_options["method"] == "per_image":
+        max_value = np.max(image_as_numpy)
+        min_value = np.min(image_as_numpy)
 
-    # TODO: remove
-    if np.min(rescaled) < 0 or np.max(rescaled) > 1:
-        print("Quitting because final number outwith range")
-        import matplotlib.pyplot as plt
-        fig, ax = plt.subplots()
-        ax.imshow(final, cmap = "gray")
-        plt.savefig("./images/error.png")
-        exit(0)
-    
-    return rescaled
+        if max_value == min_value:
+            return np.zeros_like(image_as_numpy)    # avoid dividing by zero
+        else:
+            return rescale_image(image_as_numpy, max_value, min_value)
+    elif config.rescale_options["method"] == "from_dtype":
+        shape = image_as_numpy.shape
+        if len(shape) == 3:
+            # We know its 3D but not 3 Channel because 3 Channel isn't allowed. 
+            return rescale_opencv_image_3d(image_as_numpy)
+
+        depth = image_as_numpy.dtype
+        max_value, min_value = np_dtype_max_and_min(depth)
+        return rescale_image(image_as_numpy, max_value, min_value)
+
+def rescale_opencv_image_3d(image_as_numpy):
+    rescaled_arr = np.zeros(image_as_numpy.shape, dtype=np.float32)
+    for i in range(len(image_as_numpy)):        
+        rescaled_arr[i] = rescale_opencv_image(image_as_numpy[i])
+    return rescaled_arr
+
+def rescale_image(image,
+    upper_bound,
+    lower_bound):
+        top = (image - lower_bound) * (config.rescale_options["max"] - config.rescale_options["min"])
+        final = (top / (upper_bound - lower_bound)) + config.rescale_options["min"]
+        return final + config.rescale_options["min"]
+
 
 def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     """Load an image series from a directory(e.g. dicom)
