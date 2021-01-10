@@ -4,11 +4,13 @@ to image data.
 """
 
 import glob
+import pathlib
+import os 
 
 from .utils import remove_sub_paths
 
 def get_paths_to_images(data_dir, extension, path_filters=[""]):
-    """Search directory and subdirectories for image with the given 
+    """Search directory and subdirectories for images with the given 
     extension.
 
     Optionally takes a list of strings to be applied as filters 
@@ -27,12 +29,23 @@ def get_paths_to_images(data_dir, extension, path_filters=[""]):
     Returns:
         list: list of paths to images
     """
-    paths = glob.glob(data_dir + "/**/*" + extension, recursive=True)
-    
-    if path_filters is not [""]:
-        paths = filter_paths(paths, path_filters)
+    if extension == "": # if the search is limited to directories (e.g. 3d dicoms)
+        paths = glob.glob(data_dir + "/**/*" + extension, recursive=True)
+        
+        if path_filters is not [""]:
+            paths = filter_paths(paths, path_filters)
 
-    return paths
+        return paths
+    else:   # if the search is looking for individual files. 
+        root_dir = data_dir
+        paths = []
+        for root, dirs, files in os.walk(root_dir):
+            for name in files:
+                file_extension = pathlib.Path(name).suffix
+                path = os.path.join(root, name)
+                if all([path_filter in path for path_filter in path_filters]) and file_extension == extension:
+                    paths.append(os.path.join(root, name))
+        return paths
 
 def filter_paths(paths, filters):
     """Filters a list of paths so it only contains
