@@ -19,10 +19,13 @@ def load_image(path, use_memory_mapping=False):
 
     Args:
         path (str): path to image or directory for a series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: image in numpy format
     """
+
+
     image_name = ntpath.basename(path)
     image_as_array = None
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
