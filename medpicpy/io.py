@@ -203,6 +203,7 @@ def load_series(path, use_memory_mapping=False): # for more than 2d dicoms.
 
     Args:
         path (str): Path to directory of series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: Image in numpy array format
