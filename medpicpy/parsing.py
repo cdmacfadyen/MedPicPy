@@ -429,7 +429,7 @@ def load_all_slices_from_series(paths,
                 print(f"Re-loading image: {image_index} of {len(paths)}", end="\r")
                 logging.debug(f"Re-loading image: {image_index} of {len(paths)}")
             
-            image = io.load_image(path, scale_dicom=True,use_memory_mapping=use_memory_mapping)
+            image = io.load_image(path, use_memory_mapping=use_memory_mapping)
             if image is None:
                 continue
             image_shape = image.shape

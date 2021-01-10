@@ -4,6 +4,7 @@ cache_location = "."
 suppress_errors = False
 
 rescale = False
+
 rescale_options = {
     "method" : "per_image",
     "min" : 0,

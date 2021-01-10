@@ -14,7 +14,7 @@ import logging
 logging.getLogger(__name__)
 mmap_counter = 0
 
-def load_image(path, use_memory_mapping=False, scale_dicom=False):
+def load_image(path, use_memory_mapping=False):
     """Load in any image or image series from a path
 
     Args:
@@ -41,17 +41,17 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
                     min_value = np.min(image_as_array)
                     image_as_array = rescale_image(image_as_array, max_value, min_value)
                 elif config.rescale_options["method"] == "from_dtype":
-                    if int(image.GetMetaData("0028|0103")) == 0:
+                    if int(image.GetMetaData("0028|0103")) == 0:    # unsigned int
                         max_value = 2 ** int(image.GetMetaData("0028|0101")) - 1 # http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.6.3.html
                         min_value = 0
                         image_as_array = rescale_image(image_as_array, max_value, min_value)
-                    elif int(image.GetMetaData("0028|0103")) == 1:  # 2's complement
+                    elif int(image.GetMetaData("0028|0103")) == 1:  # signed int
                         bits_stored = int(image.GetMetaData("0028|0101"))
                         min_value = (2 ** (bits_stored - 1))
                         max_value = (2 ** (bits_stored - 1)) - 1
                         image_as_array = rescale_image(image_as_array, max_value, min_value)
                 else:
-                    print("Pixel Representation not 0 or 1!")
+                    print("Pixel Representation not 0 or 1!")   # TODO: throw error
                     exit(0)
 
         except RuntimeError:
@@ -63,10 +63,10 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
     elif extension == "npy" or extension == "npz":
         image_as_array = np.load(path)
         image_as_array = rescale_opencv_image(image_as_array)
-    elif extension == "gz" or extension == "nii":
+    elif extension == "gz" or extension == "nii":   # nifti files
+        # https://brainder.org/2012/09/23/the-nifti-file-format/
         image = sitk.ReadImage(path)    
         image_as_array = sitk.GetArrayFromImage(image)
-        # print(image.GetMetaData("datatype")) # important one. https://brainder.org/2012/09/23/the-nifti-file-format/
         if config.rescale and config.rescale_options["method"] == "from_dtype":
             datatype = int(image.GetMetaData("datatype"))
             if datatype == 2:
@@ -78,7 +78,7 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
             elif datatype == 512:
                 image_as_array = image_as_array.astype(np.uint16)
             else:
-                print(f"MedPicPy currently doesn't support datatype {datatype} of nii.gz")
+                print(f"MedPicPy currently doesn't support datatype {datatype} of nii.gz, make a pull request.")
                 exit(0)
         if config.rescale and config.rescale_options["method"] == "per_image":
             image_as_array = rescale_opencv_image(image_as_array)
@@ -90,7 +90,7 @@ def load_image(path, use_memory_mapping=False, scale_dicom=False):
                 image_as_array = sitk.GetArrayFromImage(image)  # SITK also can't read it
             except RuntimeError:
                 logging.debug(f"Suppressing sitk not being able to read file: {path}")  
-                if config.suppress_errors:
+                if config.suppress_errors:  # if we've got here then SITK and OpenCV can't read the image so return None. 
                     return None
                 else:
                     raise
