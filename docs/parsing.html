@@ -3,23 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.8.4" />
 <title>medpicpy.parsing API documentation</title>
 <meta name="description" content="medpicpy&#39;s higher level functions to abstract over reading
 in medical imaging data" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<link rel="preconnect" href="https://www.google.com">
-<script async src="https://cse.google.com/cse.js?cx=017837193012385208679:pey8ky8gdqw"></script>
-<style>
-.gsc-control-cse {padding:0 !important;margin-top:1em}
-body.gsc-overflow-hidden #sidebar {overflow: visible;}
-</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
@@ -46,9 +40,13 @@ from os.path import normpath
 import pandas as pd
 import numpy as np
 import cv2
+import logging
 
 from . import io
 from .utils import remove_sub_paths
+from . import config
+
+logging.getLogger(__name__)
 
 def load_images_from_csv(dataframe, 
 image_name_column, 
@@ -251,11 +249,12 @@ def load_images_from_paths(paths, output_shape, use_memory_mapping=False):
     image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
+        print(&#34;Loading images {} / {}&#34;.format(i + 1, len(paths)), end=&#34;\r&#34;, flush=True)
         image_name = paths[i]
         image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
-            
+    print(&#34;&#34;)
     return image_array
 
 # slice axis will be -2 for most things since they 
@@ -346,7 +345,7 @@ def load_series_from_paths(
     output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
     
     for i in range(0, len(paths)):
-        # print(&#34;Loading image {} / {}&#34;.format(i, len(paths)), end=&#34;\t\t\t\r&#34;, flush=True)
+        print(&#34;Loading images {} / {}&#34;.format(i + 1, len(paths)), end=&#34;\r&#34;, flush=True)
         path = paths[i]
         image = io.load_image(path, use_memory_mapping=False)
         new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
@@ -363,41 +362,132 @@ def load_series_from_paths(
             final_image[j] = image
         
         output_array[i] = final_image
+    print(&#34;&#34;)
     return output_array
 
-# get_all_slices_from_scans maybe
-# TODO: have it return an array containing the 
-# paths also
-def load_all_slices_from_series(paths, 
-    output_shape,
-    use_memory_mapping=False):
-    &#34;&#34;&#34;Reads a dataset of 2d images from a 3d series
+
+def get_length_of_all_series(paths):
+    &#34;&#34;&#34;Find the number of 2D slices 
+    in a list of images. These images can 
+    be 2D, 3D, or a mixture of both. Also 
+    returns the paths that each slice comes from, 
+    e.g. if an image contains 250 slices, 
+    then that path will be duplicated 250 times 
+    in the array so the original scan is known. 
 
     Args:
-        paths (list or array-like): List of paths to series 
-        output_shape (tuple): desired output shape for each slice
-        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
-            Defaults to False
-    Returns:
-        numpy.Array: array containing the reshaped slices
-    &#34;&#34;&#34;
-    all_series = [io.load_image(path, use_memory_mapping=use_memory_mapping) for path in paths]
-    print(&#34;finished reading all series&#34;)
-    reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
-    series_lengths = [len(series) for series in reshaped]
-    output_array_length = sum(series_lengths)
-    output_array_shape = (output_array_length,) + output_shape
-    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+        paths (list(str)): paths to images
 
-    # array = da.zeros(output_array_shape, chunks=&#34;auto&#34;)
-    output_index = 0
-    for series_counter in range(0, len(series_lengths)):
-        for image_counter in range(0, series_lengths[series_counter]):
-            array[output_index] = reshaped[series_counter][image_counter]
-            output_index += 1
+    Returns:
+        int, list(str): the total number of slices, and the paths that
+        the images come from. 
+    &#34;&#34;&#34;
+    all_series = []
+    for index, path in enumerate(paths):
+        if index % 100 == 0:
+            print(f&#34;Getting length of images ~ {index} of {len(paths)}&#34;, end=&#34;\r&#34;)
+            logging.debug(f&#34;Getting length of images ~ {index} of {len(paths)}&#34;)
+
+        image = io.load_image(path)
+        shape = None if image is None else image.shape
+        all_series.append(shape)
+
+    print(&#34;finished reading all series&#34;)
+    none_count = 0
+    for series in all_series:
+        if series is None:
+            none_count += 1
+    print(f&#34;{none_count} out of {len(all_series)} could not be read.&#34;)
+
+    final_paths = []
+    series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
+    all_series = [series for series in all_series if series is not None]
+    number_of_series = 0
+    for index, series in enumerate(all_series):
+        path = series_and_paths[index][1]   # get the path for the image
+        if len(series) == 2:  # then it is already 2D
+            number_of_series += 1
+            final_paths.append(path)
+            continue
+        elif len(series) == 3: # if its 3d
+            if series[0] == 1:        # if its actually 2d
+                number_of_series += 1
+                final_paths.append(path)
+            elif series[2] == 3:
+                if not config.suppress_errors:
+                    print(&#34;MedPicPy does not currently work with multichannel images&#34;)
+                    exit(0)
+                    #TODO: change to exception                   
+                continue
+            else:
+                for image in series:
+                    number_of_series += 1
+                    final_paths.append(path)
+        else:
+            print(f&#34;Its not 2 or 3D!:{series}&#34;)
+            #TODO: change to exception
+            exit(0)
+    return number_of_series, final_paths
+            
+def load_all_slices_from_series(paths,
+    all_series_length,
+    output_shape,
+    use_memory_mapping=False):
+    &#34;&#34;&#34;Load a dataset of 2D slices from a list 
+    of 2 or 3 dimensional scans. Use `get_length_of_all_series`
+    to find `all_series_length` if it is not known 
+    ahead of time. 
+
+    Args:
+        paths (list(str)): list of image paths to load
+        all_series_length (int): length of output array
+        output_shape (tuple): dimensions to resize each slice to 
+        use_memory_mapping (bool, optional): store data on drive instead of ram. Defaults to False.
+
+    Returns:
+        np Array: numpy array of resized slices
+    &#34;&#34;&#34;
     
+    output_array_shape = (all_series_length,) + output_shape
+    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+    images_written = 0
+    for image_index, path in enumerate(paths):
+        try:
+            if images_written == all_series_length:
+                print(&#34;Breaking early&#34;)
+                break
+            if image_index % 100 == 0:
+                print(f&#34;Re-loading image: {image_index} of {len(paths)}&#34;, end=&#34;\r&#34;)
+                logging.debug(f&#34;Re-loading image: {image_index} of {len(paths)}&#34;)
+            
+            image = io.load_image(path, use_memory_mapping=use_memory_mapping)
+            if image is None:
+                continue
+            image_shape = image.shape
+            if len(image_shape) == 2:
+                resized_image = cv2.resize(image, output_shape)
+                array[images_written] = resized_image[:]
+                images_written += 1
+            elif len(image_shape) == 3:
+
+                if image_shape[0] == 1: #its actually 2d
+                    resized_image = cv2.resize(image, output_shape)
+                    array[images_written] = resized_image[:]
+                    images_written += 1
+                elif image_shape[2] == 3:
+                    continue    #skip rgb
+                else:
+                    for slice_index in range(len(image)):
+                        resized_image = cv2.resize(image[slice_index], output_shape)
+                        array[images_written] = resized_image[:]
+                        images_written += 1
+        except IndexError:
+            #TODO: a weird bug, look into why this happens sometimes. 
+            if config.suppress_errors:
+                logging.debug(f&#34;Suppressing index error in load index for paths:\nAttempted to write to index {images_written}, out of bounds for length {len(array)} on image path {path}&#34;)
+            else:
+                raise
     return array
-    # return array.compute()
 
 def load_specific_slices_from_series(
     paths,
@@ -510,58 +600,175 @@ def stack_modalities(arrays, axis=-1):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="medpicpy.parsing.load_all_slices_from_series"><code class="name flex">
-<span>def <span class="ident">load_all_slices_from_series</span></span>(<span>paths, output_shape, use_memory_mapping=False)</span>
+<dt id="medpicpy.parsing.get_length_of_all_series"><code class="name flex">
+<span>def <span class="ident">get_length_of_all_series</span></span>(<span>paths)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reads a dataset of 2d images from a 3d series</p>
+<div class="desc"><p>Find the number of 2D slices
+in a list of images. These images can
+be 2D, 3D, or a mixture of both. Also
+returns the paths that each slice comes from,
+e.g. if an image contains 250 slices,
+then that path will be duplicated 250 times
+in the array so the original scan is known. </p>
+<h2 id="args">Args</h2>
+<p>paths (list(str)): paths to images</p>
+<h2 id="returns">Returns</h2>
+<p>int, list(str): the total number of slices, and the paths that
+the images come from.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_length_of_all_series(paths):
+    &#34;&#34;&#34;Find the number of 2D slices 
+    in a list of images. These images can 
+    be 2D, 3D, or a mixture of both. Also 
+    returns the paths that each slice comes from, 
+    e.g. if an image contains 250 slices, 
+    then that path will be duplicated 250 times 
+    in the array so the original scan is known. 
+
+    Args:
+        paths (list(str)): paths to images
+
+    Returns:
+        int, list(str): the total number of slices, and the paths that
+        the images come from. 
+    &#34;&#34;&#34;
+    all_series = []
+    for index, path in enumerate(paths):
+        if index % 100 == 0:
+            print(f&#34;Getting length of images ~ {index} of {len(paths)}&#34;, end=&#34;\r&#34;)
+            logging.debug(f&#34;Getting length of images ~ {index} of {len(paths)}&#34;)
+
+        image = io.load_image(path)
+        shape = None if image is None else image.shape
+        all_series.append(shape)
+
+    print(&#34;finished reading all series&#34;)
+    none_count = 0
+    for series in all_series:
+        if series is None:
+            none_count += 1
+    print(f&#34;{none_count} out of {len(all_series)} could not be read.&#34;)
+
+    final_paths = []
+    series_and_paths = [(series, paths[i]) for i, series in enumerate(all_series) if series is not None]
+    all_series = [series for series in all_series if series is not None]
+    number_of_series = 0
+    for index, series in enumerate(all_series):
+        path = series_and_paths[index][1]   # get the path for the image
+        if len(series) == 2:  # then it is already 2D
+            number_of_series += 1
+            final_paths.append(path)
+            continue
+        elif len(series) == 3: # if its 3d
+            if series[0] == 1:        # if its actually 2d
+                number_of_series += 1
+                final_paths.append(path)
+            elif series[2] == 3:
+                if not config.suppress_errors:
+                    print(&#34;MedPicPy does not currently work with multichannel images&#34;)
+                    exit(0)
+                    #TODO: change to exception                   
+                continue
+            else:
+                for image in series:
+                    number_of_series += 1
+                    final_paths.append(path)
+        else:
+            print(f&#34;Its not 2 or 3D!:{series}&#34;)
+            #TODO: change to exception
+            exit(0)
+    return number_of_series, final_paths</code></pre>
+</details>
+</dd>
+<dt id="medpicpy.parsing.load_all_slices_from_series"><code class="name flex">
+<span>def <span class="ident">load_all_slices_from_series</span></span>(<span>paths, all_series_length, output_shape, use_memory_mapping=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load a dataset of 2D slices from a list
+of 2 or 3 dimensional scans. Use <code><a title="medpicpy.parsing.get_length_of_all_series" href="#medpicpy.parsing.get_length_of_all_series">get_length_of_all_series()</a></code>
+to find <code>all_series_length</code> if it is not known
+ahead of time. </p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>paths</code></strong> :&ensp;<code>list</code> or <code>array-like</code></dt>
-<dd>List of paths to series </dd>
+<dt>paths (list(str)): list of image paths to load</dt>
+<dt><strong><code>all_series_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>length of output array</dd>
 <dt><strong><code>output_shape</code></strong> :&ensp;<code>tuple</code></dt>
-<dd>desired output shape for each slice</dd>
-<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>optional, boolean</code></dt>
-<dd>store the data on disk instead of in memory.
-Defaults to False</dd>
+<dd>dimensions to resize each slice to </dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>store data on drive instead of ram. Defaults to False.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>numpy.Array</code></dt>
-<dd>array containing the reshaped slices</dd>
+<dt><code>np Array</code></dt>
+<dd>numpy array of resized slices</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_all_slices_from_series(paths, 
+<pre><code class="python">def load_all_slices_from_series(paths,
+    all_series_length,
     output_shape,
     use_memory_mapping=False):
-    &#34;&#34;&#34;Reads a dataset of 2d images from a 3d series
+    &#34;&#34;&#34;Load a dataset of 2D slices from a list 
+    of 2 or 3 dimensional scans. Use `get_length_of_all_series`
+    to find `all_series_length` if it is not known 
+    ahead of time. 
 
     Args:
-        paths (list or array-like): List of paths to series 
-        output_shape (tuple): desired output shape for each slice
-        use_memory_mapping (optional, boolean): store the data on disk instead of in memory.
-            Defaults to False
-    Returns:
-        numpy.Array: array containing the reshaped slices
-    &#34;&#34;&#34;
-    all_series = [io.load_image(path, use_memory_mapping=use_memory_mapping) for path in paths]
-    print(&#34;finished reading all series&#34;)
-    reshaped = [[cv2.resize(image, output_shape) for image in images] for images in all_series]
-    series_lengths = [len(series) for series in reshaped]
-    output_array_length = sum(series_lengths)
-    output_array_shape = (output_array_length,) + output_shape
-    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+        paths (list(str)): list of image paths to load
+        all_series_length (int): length of output array
+        output_shape (tuple): dimensions to resize each slice to 
+        use_memory_mapping (bool, optional): store data on drive instead of ram. Defaults to False.
 
-    # array = da.zeros(output_array_shape, chunks=&#34;auto&#34;)
-    output_index = 0
-    for series_counter in range(0, len(series_lengths)):
-        for image_counter in range(0, series_lengths[series_counter]):
-            array[output_index] = reshaped[series_counter][image_counter]
-            output_index += 1
+    Returns:
+        np Array: numpy array of resized slices
+    &#34;&#34;&#34;
     
+    output_array_shape = (all_series_length,) + output_shape
+    array = io.allocate_array(output_array_shape, use_memory_mapping=use_memory_mapping)
+    images_written = 0
+    for image_index, path in enumerate(paths):
+        try:
+            if images_written == all_series_length:
+                print(&#34;Breaking early&#34;)
+                break
+            if image_index % 100 == 0:
+                print(f&#34;Re-loading image: {image_index} of {len(paths)}&#34;, end=&#34;\r&#34;)
+                logging.debug(f&#34;Re-loading image: {image_index} of {len(paths)}&#34;)
+            
+            image = io.load_image(path, use_memory_mapping=use_memory_mapping)
+            if image is None:
+                continue
+            image_shape = image.shape
+            if len(image_shape) == 2:
+                resized_image = cv2.resize(image, output_shape)
+                array[images_written] = resized_image[:]
+                images_written += 1
+            elif len(image_shape) == 3:
+
+                if image_shape[0] == 1: #its actually 2d
+                    resized_image = cv2.resize(image, output_shape)
+                    array[images_written] = resized_image[:]
+                    images_written += 1
+                elif image_shape[2] == 3:
+                    continue    #skip rgb
+                else:
+                    for slice_index in range(len(image)):
+                        resized_image = cv2.resize(image[slice_index], output_shape)
+                        array[images_written] = resized_image[:]
+                        images_written += 1
+        except IndexError:
+            #TODO: a weird bug, look into why this happens sometimes. 
+            if config.suppress_errors:
+                logging.debug(f&#34;Suppressing index error in load index for paths:\nAttempted to write to index {images_written}, out of bounds for length {len(array)} on image path {path}&#34;)
+            else:
+                raise
     return array</code></pre>
 </details>
 </dd>
@@ -931,11 +1138,12 @@ Defaults to False</dd>
     image_array = io.allocate_array(array_shape, use_memory_mapping=use_memory_mapping)
 
     for i in range(0, array_length):
+        print(&#34;Loading images {} / {}&#34;.format(i + 1, len(paths)), end=&#34;\r&#34;, flush=True)
         image_name = paths[i]
         image = io.load_image(image_name, use_memory_mapping=use_memory_mapping)
         resized = cv2.resize(image, output_shape)
         image_array[i] = resized
-            
+    print(&#34;&#34;)
     return image_array</code></pre>
 </details>
 </dd>
@@ -1105,7 +1313,7 @@ Defaults to False</dd>
     output_array = io.allocate_array(output_shape, use_memory_mapping=use_memory_mapping)
     
     for i in range(0, len(paths)):
-        # print(&#34;Loading image {} / {}&#34;.format(i, len(paths)), end=&#34;\t\t\t\r&#34;, flush=True)
+        print(&#34;Loading images {} / {}&#34;.format(i + 1, len(paths)), end=&#34;\r&#34;, flush=True)
         path = paths[i]
         image = io.load_image(path, use_memory_mapping=False)
         new_image = io.allocate_array(((len(slices_to_take),) + image[0].shape), use_memory_mapping=False)
@@ -1122,6 +1330,7 @@ Defaults to False</dd>
             final_image[j] = image
         
         output_array[i] = final_image
+    print(&#34;&#34;)
     return output_array</code></pre>
 </details>
 </dd>
@@ -1325,10 +1534,6 @@ leaving this default is probably fine. Defaults to -1.</dd>
 </section>
 </article>
 <nav id="sidebar">
-<div class="gcse-search" style="height: 70px"
-data-as_oq="inurl:github.com/cdmacfadyen/MedPicPy site:cdmacfadyen.github.io/MedPicPy"
-data-gaCategoryParameter="medpicpy.parsing">
-</div>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>
@@ -1341,6 +1546,7 @@ data-gaCategoryParameter="medpicpy.parsing">
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="medpicpy.parsing.get_length_of_all_series" href="#medpicpy.parsing.get_length_of_all_series">get_length_of_all_series</a></code></li>
 <li><code><a title="medpicpy.parsing.load_all_slices_from_series" href="#medpicpy.parsing.load_all_slices_from_series">load_all_slices_from_series</a></code></li>
 <li><code><a title="medpicpy.parsing.load_bounding_boxes_from_csv" href="#medpicpy.parsing.load_bounding_boxes_from_csv">load_bounding_boxes_from_csv</a></code></li>
 <li><code><a title="medpicpy.parsing.load_classes_in_directory_name" href="#medpicpy.parsing.load_classes_in_directory_name">load_classes_in_directory_name</a></code></li>
@@ -1355,7 +1561,7 @@ data-gaCategoryParameter="medpicpy.parsing">
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
 </footer>
 </body>
 </html>

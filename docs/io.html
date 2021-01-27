@@ -3,22 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.8.4" />
 <title>medpicpy.io API documentation</title>
 <meta name="description" content="medpicpy&#39;s lower level functions for reading individual images." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<link rel="preconnect" href="https://www.google.com">
-<script async src="https://cse.google.com/cse.js?cx=017837193012385208679:pey8ky8gdqw"></script>
-<style>
-.gsc-control-cse {padding:0 !important;margin-top:1em}
-body.gsc-overflow-hidden #sidebar {overflow: visible;}
-</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
@@ -38,11 +32,15 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 &#34;&#34;&#34;
 import os
 import ntpath
-
+# import pydicom
 import cv2
 import SimpleITK as sitk
 import numpy as np
 
+from . import config
+import logging
+
+logging.getLogger(__name__)
 mmap_counter = 0
 
 def load_image(path, use_memory_mapping=False):
@@ -50,30 +48,87 @@ def load_image(path, use_memory_mapping=False):
 
     Args:
         path (str): path to image or directory for a series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: image in numpy format
     &#34;&#34;&#34;
+
+
     image_name = ntpath.basename(path)
     image_as_array = None
-
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
         series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
-    extension = image_name.split(&#34;.&#34;)[1]
+    extension = image_name.split(&#34;.&#34;)[-1]   # i want it to be the last thing
     if extension == &#34;dcm&#34;:    # for loading an individual (2d) dicom
-        image = sitk.ReadImage(path)
-        image_as_array = sitk.GetArrayFromImage(image)
-        image_as_array = image_as_array[0]  # only the first one since this is a 2d dico
-    else:
-        image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-        
-        if image_as_array is None:  # opencv couldn&#39;t read it
+        try:
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
-    
-    if use_memory_mapping:
+            image_as_array = image_as_array[0]  # only the first one since this is a 2d dico
+            if config.rescale:
+                if config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+                    max_value = np.max(image_as_array)
+                    min_value = np.min(image_as_array)
+                    image_as_array = rescale_image(image_as_array, max_value, min_value)
+                elif config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+                    if int(image.GetMetaData(&#34;0028|0103&#34;)) == 0:    # unsigned int
+                        max_value = 2 ** int(image.GetMetaData(&#34;0028|0101&#34;)) - 1 # http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.6.3.html
+                        min_value = 0
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
+                    elif int(image.GetMetaData(&#34;0028|0103&#34;)) == 1:  # signed int
+                        bits_stored = int(image.GetMetaData(&#34;0028|0101&#34;))
+                        min_value = (2 ** (bits_stored - 1))
+                        max_value = (2 ** (bits_stored - 1)) - 1
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
+                else:
+                    print(&#34;Pixel Representation not 0 or 1!&#34;)   # TODO: throw error
+                    exit(0)
+
+        except RuntimeError:
+            if config.suppress_errors:
+                print(f&#34;Error reading Dicom! {path} must be non-image.&#34;)
+            else:
+                raise
+
+    elif extension == &#34;npy&#34; or extension == &#34;npz&#34;:
+        image_as_array = np.load(path)
+        image_as_array = rescale_opencv_image(image_as_array)
+    elif extension == &#34;gz&#34; or extension == &#34;nii&#34;:   # nifti files
+        # https://brainder.org/2012/09/23/the-nifti-file-format/
+        image = sitk.ReadImage(path)    
+        image_as_array = sitk.GetArrayFromImage(image)
+        if config.rescale and config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+            datatype = int(image.GetMetaData(&#34;datatype&#34;))
+            if datatype == 2:
+                image_as_array = image_as_array.astype(np.uint8)
+            elif datatype == 4:
+                image_as_array = image_as_array.astype(np.int16)
+            elif datatype == 16:
+                image_as_array = image_as_array.astype(np.int32)
+            elif datatype == 512:
+                image_as_array = image_as_array.astype(np.uint16)
+            else:
+                print(f&#34;MedPicPy currently doesn&#39;t support datatype {datatype} of nii.gz, make a pull request.&#34;)
+                exit(0)
+        if config.rescale and config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+            image_as_array = rescale_opencv_image(image_as_array)
+    else:
+        image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        if image_as_array is None:  # opencv couldn&#39;t read it, maybe sitk can
+            try:
+                image = sitk.ReadImage(path)    
+                image_as_array = sitk.GetArrayFromImage(image)  # SITK also can&#39;t read it
+            except RuntimeError:
+                logging.debug(f&#34;Suppressing sitk not being able to read file: {path}&#34;)  
+                if config.suppress_errors:  # if we&#39;ve got here then SITK and OpenCV can&#39;t read the image so return None. 
+                    return None
+                else:
+                    raise
+        image_as_array = rescale_opencv_image(image_as_array)
+
+    if use_memory_mapping and image_as_array is not None:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=image_as_array.shape)
         mmap[:] = image_as_array[:]
@@ -81,12 +136,103 @@ def load_image(path, use_memory_mapping=False):
     else:
         return image_as_array
 
+def np_dtype_max_and_min(dtype):
+    &#34;&#34;&#34;Takes a numpy dytpe and 
+    returns the maximum and minimum possible values 
+    for that dtype. 
+
+    Args:
+        dtype (numpy dtype): dtype to find max and min values
+
+    Returns:
+        (number, number): max and min value for given dtype, can be float or int
+    &#34;&#34;&#34;
+    if np.issubdtype(dtype, np.integer):
+        #int things
+        int_info = np.iinfo(dtype)
+        max_val = int_info.max
+        min_val = int_info.min
+        return max_val, min_val
+    elif np.issubdtype(dtype, np.floating):
+        #float things
+        float_info = np.finfo(dtype)
+        max_val = float_info.max
+        min_val = float_info.min
+        return max_val, min_val
+    else:
+        #TODO: raise exception
+        pass
+    
+def rescale_opencv_image(image_as_numpy):
+    &#34;&#34;&#34;Rescale an image that has been loaded 
+    using opencv. This loads the images directly into 
+    numpy format. 
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled image
+    &#34;&#34;&#34;
+    if config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+        max_value = np.max(image_as_numpy)
+        min_value = np.min(image_as_numpy)
+
+        if max_value == min_value:
+            return np.zeros_like(image_as_numpy)    # avoid dividing by zero
+        else:
+            return rescale_image(image_as_numpy, max_value, min_value)
+    elif config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+        shape = image_as_numpy.shape
+        if len(shape) == 3:
+            # We know its 3D but not 3 Channel because 3 Channel isn&#39;t allowed. 
+            return rescale_opencv_image_3d(image_as_numpy)
+
+        depth = image_as_numpy.dtype
+        max_value, min_value = np_dtype_max_and_min(depth)
+        return rescale_image(image_as_numpy, max_value, min_value)
+
+def rescale_opencv_image_3d(image_as_numpy):
+    &#34;&#34;&#34;Rescale an image with more than 
+    2-dimensions.
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled 3d image
+    &#34;&#34;&#34;
+    rescaled_arr = np.zeros(image_as_numpy.shape, dtype=np.float32)
+    for i in range(len(image_as_numpy)):        
+        rescaled_arr[i] = rescale_opencv_image(image_as_numpy[i])
+    return rescaled_arr
+
+def rescale_image(image,
+    upper_bound,
+    lower_bound):
+    &#34;&#34;&#34;General feature scaling function. Takes an 
+    image to rescale and the upper and lower possible 
+    value for that image data. 
+
+    Args:
+        image (np array): array containing image data
+        upper_bound (int): max possible pixel value in image
+        lower_bound (int): min possible pixel value in image
+
+    Returns:
+        np.array: rescaled image
+    &#34;&#34;&#34;
+    top = (image - lower_bound) * (config.rescale_options[&#34;max&#34;] - config.rescale_options[&#34;min&#34;])
+    final = (top / (upper_bound - lower_bound)) + config.rescale_options[&#34;min&#34;]
+    return final + config.rescale_options[&#34;min&#34;]
+
 
 def load_series(path, use_memory_mapping=False): # for more than 2d dicoms. 
     &#34;&#34;&#34;Load an image series from a directory(e.g. dicom)
 
     Args:
         path (str): Path to directory of series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: Image in numpy array format
@@ -125,7 +271,7 @@ def allocate_array(shape, use_memory_mapping=False):
 def get_counter_and_update():
     global mmap_counter
     val = mmap_counter
-    path = &#34;medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
+    path = config.cache_location + &#34;/medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
     mmap_counter += 1
     return path</code></pre>
 </details>
@@ -188,7 +334,7 @@ def get_counter_and_update():
 <pre><code class="python">def get_counter_and_update():
     global mmap_counter
     val = mmap_counter
-    path = &#34;medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
+    path = config.cache_location + &#34;/medpicpy_cache/&#34; + str(val) + &#34;.dat&#34;
     mmap_counter += 1
     return path</code></pre>
 </details>
@@ -202,6 +348,8 @@ def get_counter_and_update():
 <dl>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
 <dd>path to image or directory for a series</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>[description]. Hold large datasets on disk instead of in memory.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -217,30 +365,87 @@ def get_counter_and_update():
 
     Args:
         path (str): path to image or directory for a series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: image in numpy format
     &#34;&#34;&#34;
+
+
     image_name = ntpath.basename(path)
     image_as_array = None
-
     if os.path.isdir(path): # if its a directory its a dicom series or something similar
         series = load_series(path, use_memory_mapping=use_memory_mapping)
         return series
     
-    extension = image_name.split(&#34;.&#34;)[1]
+    extension = image_name.split(&#34;.&#34;)[-1]   # i want it to be the last thing
     if extension == &#34;dcm&#34;:    # for loading an individual (2d) dicom
-        image = sitk.ReadImage(path)
-        image_as_array = sitk.GetArrayFromImage(image)
-        image_as_array = image_as_array[0]  # only the first one since this is a 2d dico
-    else:
-        image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-        
-        if image_as_array is None:  # opencv couldn&#39;t read it
+        try:
             image = sitk.ReadImage(path)
             image_as_array = sitk.GetArrayFromImage(image)
-    
-    if use_memory_mapping:
+            image_as_array = image_as_array[0]  # only the first one since this is a 2d dico
+            if config.rescale:
+                if config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+                    max_value = np.max(image_as_array)
+                    min_value = np.min(image_as_array)
+                    image_as_array = rescale_image(image_as_array, max_value, min_value)
+                elif config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+                    if int(image.GetMetaData(&#34;0028|0103&#34;)) == 0:    # unsigned int
+                        max_value = 2 ** int(image.GetMetaData(&#34;0028|0101&#34;)) - 1 # http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.7.6.3.html
+                        min_value = 0
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
+                    elif int(image.GetMetaData(&#34;0028|0103&#34;)) == 1:  # signed int
+                        bits_stored = int(image.GetMetaData(&#34;0028|0101&#34;))
+                        min_value = (2 ** (bits_stored - 1))
+                        max_value = (2 ** (bits_stored - 1)) - 1
+                        image_as_array = rescale_image(image_as_array, max_value, min_value)
+                else:
+                    print(&#34;Pixel Representation not 0 or 1!&#34;)   # TODO: throw error
+                    exit(0)
+
+        except RuntimeError:
+            if config.suppress_errors:
+                print(f&#34;Error reading Dicom! {path} must be non-image.&#34;)
+            else:
+                raise
+
+    elif extension == &#34;npy&#34; or extension == &#34;npz&#34;:
+        image_as_array = np.load(path)
+        image_as_array = rescale_opencv_image(image_as_array)
+    elif extension == &#34;gz&#34; or extension == &#34;nii&#34;:   # nifti files
+        # https://brainder.org/2012/09/23/the-nifti-file-format/
+        image = sitk.ReadImage(path)    
+        image_as_array = sitk.GetArrayFromImage(image)
+        if config.rescale and config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+            datatype = int(image.GetMetaData(&#34;datatype&#34;))
+            if datatype == 2:
+                image_as_array = image_as_array.astype(np.uint8)
+            elif datatype == 4:
+                image_as_array = image_as_array.astype(np.int16)
+            elif datatype == 16:
+                image_as_array = image_as_array.astype(np.int32)
+            elif datatype == 512:
+                image_as_array = image_as_array.astype(np.uint16)
+            else:
+                print(f&#34;MedPicPy currently doesn&#39;t support datatype {datatype} of nii.gz, make a pull request.&#34;)
+                exit(0)
+        if config.rescale and config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+            image_as_array = rescale_opencv_image(image_as_array)
+    else:
+        image_as_array = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        if image_as_array is None:  # opencv couldn&#39;t read it, maybe sitk can
+            try:
+                image = sitk.ReadImage(path)    
+                image_as_array = sitk.GetArrayFromImage(image)  # SITK also can&#39;t read it
+            except RuntimeError:
+                logging.debug(f&#34;Suppressing sitk not being able to read file: {path}&#34;)  
+                if config.suppress_errors:  # if we&#39;ve got here then SITK and OpenCV can&#39;t read the image so return None. 
+                    return None
+                else:
+                    raise
+        image_as_array = rescale_opencv_image(image_as_array)
+
+    if use_memory_mapping and image_as_array is not None:
         mmap_name = get_counter_and_update()
         mmap = np.memmap(mmap_name, dtype=np.float32, mode=&#34;w+&#34;, shape=image_as_array.shape)
         mmap[:] = image_as_array[:]
@@ -258,6 +463,8 @@ def get_counter_and_update():
 <dl>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
 <dd>Path to directory of series</dd>
+<dt><strong><code>use_memory_mapping</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>[description]. Hold large datasets on disk instead of in memory.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -273,6 +480,7 @@ def get_counter_and_update():
 
     Args:
         path (str): Path to directory of series
+        use_memory_mapping (bool, optional): [description]. Hold large datasets on disk instead of in memory.
 
     Returns:
         np.Array: Image in numpy array format
@@ -292,16 +500,190 @@ def get_counter_and_update():
         return array</code></pre>
 </details>
 </dd>
+<dt id="medpicpy.io.np_dtype_max_and_min"><code class="name flex">
+<span>def <span class="ident">np_dtype_max_and_min</span></span>(<span>dtype)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes a numpy dytpe and
+returns the maximum and minimum possible values
+for that dtype. </p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dtype</code></strong> :&ensp;<code>numpy dtype</code></dt>
+<dd>dtype to find max and min values</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>(number, number): max and min value for given dtype, can be float or int</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def np_dtype_max_and_min(dtype):
+    &#34;&#34;&#34;Takes a numpy dytpe and 
+    returns the maximum and minimum possible values 
+    for that dtype. 
+
+    Args:
+        dtype (numpy dtype): dtype to find max and min values
+
+    Returns:
+        (number, number): max and min value for given dtype, can be float or int
+    &#34;&#34;&#34;
+    if np.issubdtype(dtype, np.integer):
+        #int things
+        int_info = np.iinfo(dtype)
+        max_val = int_info.max
+        min_val = int_info.min
+        return max_val, min_val
+    elif np.issubdtype(dtype, np.floating):
+        #float things
+        float_info = np.finfo(dtype)
+        max_val = float_info.max
+        min_val = float_info.min
+        return max_val, min_val
+    else:
+        #TODO: raise exception
+        pass</code></pre>
+</details>
+</dd>
+<dt id="medpicpy.io.rescale_image"><code class="name flex">
+<span>def <span class="ident">rescale_image</span></span>(<span>image, upper_bound, lower_bound)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>General feature scaling function. Takes an
+image to rescale and the upper and lower possible
+value for that image data. </p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>image</code></strong> :&ensp;<code>np array</code></dt>
+<dd>array containing image data</dd>
+<dt><strong><code>upper_bound</code></strong> :&ensp;<code>int</code></dt>
+<dd>max possible pixel value in image</dd>
+<dt><strong><code>lower_bound</code></strong> :&ensp;<code>int</code></dt>
+<dd>min possible pixel value in image</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>np.array</code></dt>
+<dd>rescaled image</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rescale_image(image,
+    upper_bound,
+    lower_bound):
+    &#34;&#34;&#34;General feature scaling function. Takes an 
+    image to rescale and the upper and lower possible 
+    value for that image data. 
+
+    Args:
+        image (np array): array containing image data
+        upper_bound (int): max possible pixel value in image
+        lower_bound (int): min possible pixel value in image
+
+    Returns:
+        np.array: rescaled image
+    &#34;&#34;&#34;
+    top = (image - lower_bound) * (config.rescale_options[&#34;max&#34;] - config.rescale_options[&#34;min&#34;])
+    final = (top / (upper_bound - lower_bound)) + config.rescale_options[&#34;min&#34;]
+    return final + config.rescale_options[&#34;min&#34;]</code></pre>
+</details>
+</dd>
+<dt id="medpicpy.io.rescale_opencv_image"><code class="name flex">
+<span>def <span class="ident">rescale_opencv_image</span></span>(<span>image_as_numpy)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rescale an image that has been loaded
+using opencv. This loads the images directly into
+numpy format. </p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>image_as_numpy</code></strong> :&ensp;<code>np array</code></dt>
+<dd>numpy array containing image data</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>np array</code></dt>
+<dd>rescaled image</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rescale_opencv_image(image_as_numpy):
+    &#34;&#34;&#34;Rescale an image that has been loaded 
+    using opencv. This loads the images directly into 
+    numpy format. 
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled image
+    &#34;&#34;&#34;
+    if config.rescale_options[&#34;method&#34;] == &#34;per_image&#34;:
+        max_value = np.max(image_as_numpy)
+        min_value = np.min(image_as_numpy)
+
+        if max_value == min_value:
+            return np.zeros_like(image_as_numpy)    # avoid dividing by zero
+        else:
+            return rescale_image(image_as_numpy, max_value, min_value)
+    elif config.rescale_options[&#34;method&#34;] == &#34;from_dtype&#34;:
+        shape = image_as_numpy.shape
+        if len(shape) == 3:
+            # We know its 3D but not 3 Channel because 3 Channel isn&#39;t allowed. 
+            return rescale_opencv_image_3d(image_as_numpy)
+
+        depth = image_as_numpy.dtype
+        max_value, min_value = np_dtype_max_and_min(depth)
+        return rescale_image(image_as_numpy, max_value, min_value)</code></pre>
+</details>
+</dd>
+<dt id="medpicpy.io.rescale_opencv_image_3d"><code class="name flex">
+<span>def <span class="ident">rescale_opencv_image_3d</span></span>(<span>image_as_numpy)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rescale an image with more than
+2-dimensions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>image_as_numpy</code></strong> :&ensp;<code>np array</code></dt>
+<dd>numpy array containing image data</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>np array</code></dt>
+<dd>rescaled 3d image</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rescale_opencv_image_3d(image_as_numpy):
+    &#34;&#34;&#34;Rescale an image with more than 
+    2-dimensions.
+
+    Args:
+        image_as_numpy (np array): numpy array containing image data
+
+    Returns:
+        np array: rescaled 3d image
+    &#34;&#34;&#34;
+    rescaled_arr = np.zeros(image_as_numpy.shape, dtype=np.float32)
+    for i in range(len(image_as_numpy)):        
+        rescaled_arr[i] = rescale_opencv_image(image_as_numpy[i])
+    return rescaled_arr</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
 </section>
 </article>
 <nav id="sidebar">
-<div class="gcse-search" style="height: 70px"
-data-as_oq="inurl:github.com/cdmacfadyen/MedPicPy site:cdmacfadyen.github.io/MedPicPy"
-data-gaCategoryParameter="medpicpy.io">
-</div>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>
@@ -318,13 +700,17 @@ data-gaCategoryParameter="medpicpy.io">
 <li><code><a title="medpicpy.io.get_counter_and_update" href="#medpicpy.io.get_counter_and_update">get_counter_and_update</a></code></li>
 <li><code><a title="medpicpy.io.load_image" href="#medpicpy.io.load_image">load_image</a></code></li>
 <li><code><a title="medpicpy.io.load_series" href="#medpicpy.io.load_series">load_series</a></code></li>
+<li><code><a title="medpicpy.io.np_dtype_max_and_min" href="#medpicpy.io.np_dtype_max_and_min">np_dtype_max_and_min</a></code></li>
+<li><code><a title="medpicpy.io.rescale_image" href="#medpicpy.io.rescale_image">rescale_image</a></code></li>
+<li><code><a title="medpicpy.io.rescale_opencv_image" href="#medpicpy.io.rescale_opencv_image">rescale_opencv_image</a></code></li>
+<li><code><a title="medpicpy.io.rescale_opencv_image_3d" href="#medpicpy.io.rescale_opencv_image_3d">rescale_opencv_image_3d</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
 </footer>
 </body>
 </html>
